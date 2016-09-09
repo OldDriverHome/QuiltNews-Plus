@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#8f000000">
+
+    <RelativeLayout
+        android:id="@+id/popup_anima"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#fff"
+        android:layout_centerInParent="true"
+        android:layout_margin="25dp">
+        <TextView
+            android:id="@+id/popup_title"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:textColor="@color/colorAccent"
+            android:text="请输入评论的内容"
+            android:gravity="left|center_vertical"
+            android:textSize="18sp"
+            android:paddingLeft="15dp"
+            />
+        <View
+            android:id="@+id/line"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/colorAccent"
+            android:layout_below="@id/popup_title"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"/>
+
+        <EditText
+            android:id="@+id/content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:scrollbars="vertical"
+            android:inputType="textMultiLine"
+            android:layout_below="@+id/line" />
+
+        <TextView
+            android:id="@+id/send_discuss"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:padding="3dp"
+            android:textColor="@color/colorAccent"
+            android:textSize="14sp"
+            android:layout_below="@id/content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="15dp"
+            android:text="发送"/>
+
+
+    </RelativeLayout>
+</RelativeLayout>

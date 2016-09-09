@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="take_picture">
+        <item>从拍照获取头像</item>
+        <item>从相册选取头像</item>
+    </string-array>
+</resources>

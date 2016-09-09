@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:layout_alignParentBottom="true"
+    android:background="@color/card_view_color"
+    >
+    <ImageView
+        android:id="@+id/bottom_divider"
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:src="@color/divider"
+
+        />
+    <RadioGroup
+        android:id="@+id/tab"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:background="@color/card_view_color"
+
+        >
+        <RadioButton
+            android:id="@+id/bottom_hot_news"
+            style="@style/bottom_tab"
+            android:drawableTop="@drawable/bottom_everyday_news_selector"
+            android:text="热门"
+            android:checked="true"
+            android:background="@color/card_view_color"
+            />
+        <RadioButton
+            android:id="@+id/bottom_eyeshot_news"
+            style="@style/bottom_tab"
+            android:drawableTop="@drawable/bottom_eyeshot_selector"
+            android:text="视界"
+            android:background="@color/card_view_color"
+            android:checked="false" />
+        <RadioButton
+            android:id="@+id/bottom_before_bed_news"
+            style="@style/bottom_tab"
+            android:drawableTop="@drawable/bottom_before_bed_news_selector"
+            android:text="睡前"
+            android:background="@color/card_view_color"
+            />
+        <RadioButton
+            android:id="@+id/bottom_personal_center"
+            style="@style/bottom_tab"
+            android:drawableTop="@drawable/bottom_personal_center_selector"
+            android:text="我的"
+            android:background="@color/card_view_color"
+            />
+    </RadioGroup>
+
+</LinearLayout>

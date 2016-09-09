@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="45dp"
+    android:background="@color/colorPrimary"
+    android:id="@+id/false_toolbar">
+
+    <ImageButton
+        android:id="@+id/ib_toolbar_back"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="15dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/back"
+        android:background="#00000000"
+        android:layout_alignParentLeft="true" />
+
+    <TextView
+        android:id="@+id/tv_title_toolbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:text="睡前精选"
+        android:textColor="#fff"
+        android:textSize="17sp" />
+
+    <ImageButton
+        android:id="@+id/ib_toobar_read_mode"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/ib_toolbar_back"
+        android:layout_marginRight="15dp"
+        android:src="#000"
+        android:layout_alignParentRight="true" />
+</RelativeLayout>
+

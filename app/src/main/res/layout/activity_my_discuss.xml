@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.xushuzhan.quiltnews.ui.activity.MyDiscussActivity">
+<include
+    android:id="@+id/toolbar_include_my_discuss"
+    layout="@layout/toolbar"/>
+    <com.jude.easyrecyclerview.EasyRecyclerView
+        android:id="@+id/recycler_view_my_discuss"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar_include_my_discuss"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"></com.jude.easyrecyclerview.EasyRecyclerView>
+</RelativeLayout>

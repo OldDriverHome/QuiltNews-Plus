@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/background"
+                tools:context="com.xushuzhan.quiltnews.ui.activity.SignUpActivity">
+
+    <include
+        android:id="@+id/toolbar_login_in"
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"/>
+
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/ca1"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_below="@+id/toolbar_login_in"
+        android:layout_margin="20dp"
+        android:background="@color/card_view_color">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="15dp">
+
+                <ImageView
+                    android:id="@+id/login_in_user"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignBottom="@+id/ti_login_in_account"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginBottom="12dp"
+                    android:src="@drawable/pic_user"/>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/ti_login_in_account"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@+id/login_in_user"
+                    android:textColorHint="@color/colorTextHint"
+                    >
+
+                    <EditText
+                        android:id="@+id/login_in_account"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/hint_user_name"
+                        android:singleLine="true"
+                        />
+                </android.support.design.widget.TextInputLayout>
+
+                <ImageView
+                    android:id="@+id/pic_login_in_password"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignBottom="@+id/iv_login_in_password"
+                    android:layout_marginBottom="12dp"
+                    android:layout_toLeftOf="@+id/iv_login_in_password"
+                    android:layout_toStartOf="@+id/iv_login_in_password"
+                    android:src="@drawable/pic_password"/>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/iv_login_in_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/ti_login_in_account"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@+id/login_in_user"
+                    android:textColorHint="@color/colorTextHint">
+
+                    <EditText
+                        android:id="@+id/login_in_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/hint_password"
+                        android:inputType="textPassword"
+                        android:singleLine="true"/>
+                </android.support.design.widget.TextInputLayout>
+            </RelativeLayout>
+
+        </ScrollView>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cv_login_in"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_below="@+id/ca1"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:clickable="true"
+        >
+
+        <RelativeLayout
+            android:id="@+id/login_in_now"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/card_view_color"
+            android:clickable="true"
+            >
+
+            <TextView
+                style="@style/Text_Content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="@string/login"/>
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <TextView
+        android:id="@+id/textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/cv_login_in"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="40dp"
+        android:text="@string/choose_more_login_way"
+        android:textColor="@color/colorTextHint"
+        />
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cv3"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_below="@+id/textview"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/card_view_color"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+
+            >
+
+            <RelativeLayout
+                android:id="@+id/qq_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true">
+
+                <ImageView
+                    android:id="@+id/qq_p"
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/qq"/>
+
+                <TextView
+                    android:id="@+id/qq_t"
+                    style="@style/Text_Content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/qq_p"
+                    android:layout_centerHorizontal="true"
+                    android:text="使用QQ登录"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true">
+
+                <ImageView
+                    android:id="@+id/we_bo_p"
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:padding="5dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/we_bo"/>
+
+                <TextView
+                    android:id="@+id/qwe_bo_t"
+                    style="@style/Text_Content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/we_bo_p"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/we_bo_login"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true">
+
+                <ImageView
+                    android:id="@+id/we_chat_p"
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:padding="6dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/we_chat"/>
+
+                <TextView
+                    android:id="@+id/we_chat_t"
+                    style="@style/Text_Content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/we_chat_p"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/we_chat_login"/>
+            </RelativeLayout>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="bottom"
+            android:orientation="vertical"
+
+            >
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:layout_marginTop="2dp"
+                android:background="#ccc"
+                />
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/pic_register"/>
+
+            <TextView
+                android:id="@+id/textView"
+                style="@style/Text_Content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/imageView"
+                android:layout_toEndOf="@+id/imageView"
+                android:layout_toRightOf="@+id/imageView"
+                android:text="@string/no_account"/>
+
+            <TextView
+                android:id="@+id/tv_login_sign_up_now"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/textView"
+                android:layout_toEndOf="@+id/textView"
+                android:layout_toRightOf="@+id/textView"
+                android:clickable="true"
+                android:text="@string/sign_up_now"
+                android:textColor="#eb4f38"
+                android:textSize="13sp"/>
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+</RelativeLayout>

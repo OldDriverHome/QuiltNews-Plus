@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#0b73b1</color>
+    <color name="colorPrimaryDark">#0b73b1</color>
+    <color name="colorAccent">#9999</color>
+    <color name="text_color_primary">#778088</color>
+    <color name="card_view_color">#424242</color>
+    <color name="background">#5c5b5b</color>
+    <color name="hot_news_list_title">#7E858D</color>
+    <color name="hot_news_list_resouce">#606265</color>
+    <color name="hot_news_list_time">#606265</color>
+    <color name="divider">#5b5959</color>
+    <color name="tab_title">#7E858D</color>
+    <color name="small_content">#606265</color>
+    <color name="login_now">#898b8e</color>
+    <color name="personal_center">#424242</color>
+    <color name="defaut">#a4a2a2</color>
+    <color name="discuss_window">#424242</color>
+</resources>
