@@ -15,6 +15,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVFile;
+import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.ProgressCallback;
+import com.avos.avoscloud.SaveCallback;
+import com.bumptech.glide.Glide;
 import com.xushuzhan.quiltnews.R;
 import com.xushuzhan.quiltnews.modle.network.config.NewsInfo;
 import com.xushuzhan.quiltnews.modle.network.config.UserInfo;
@@ -23,6 +29,8 @@ import com.xushuzhan.quiltnews.ui.activity.LoginActivity;
 import com.xushuzhan.quiltnews.ui.activity.MyCollectionActivity;
 import com.xushuzhan.quiltnews.ui.activity.MyDiscussActivity;
 import com.xushuzhan.quiltnews.ui.iview.IpersonalCenterView;
+
+import java.io.FileNotFoundException;
 
 import cn.finalteam.rxgalleryfinal.RxGalleryFinal;
 import cn.finalteam.rxgalleryfinal.imageloader.ImageLoaderType;
@@ -52,7 +60,7 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
     ImageView ReadModeIV;
     TextView ReadModeTV;
     PersonalCenterPresenter personalCenterPresenter;
-    boolean isLogin = false;
+    boolean isLogin;
 
     @Nullable
     @Override
@@ -61,6 +69,21 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
         initView();
         personalCenterPresenter = new PersonalCenterPresenter(this);
         personalCenterPresenter.setHeadPicture();
+        isLogin = AVUser.getCurrentUser() != null;
+        setupNewHeadPicture();
+        loadHeadPicture();
+        String nickNameToText = isLogin ? "输入昵称" : "点击登录";
+        nickName.setText(nickNameToText);
+        nickName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isLogin) {
+                    personalCenterPresenter.editNickName();
+                } else {
+                    personalCenterPresenter.intentToLoginActivity();
+                }
+            }
+        });
         return view;
     }
 
@@ -89,11 +112,6 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
         nickName = (TextView) view.findViewById(R.id.personal_certen_login_now);
         signOut = (RelativeLayout) view.findViewById(R.id.rl_pc_sign_out);
         signOut.setOnClickListener(this);
-        try {
-            checkInfo();
-        } catch (Exception e) {
-            Log.d(TAG, "initView: " + e.getMessage());
-        }
     }
 
 
@@ -122,7 +140,7 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
                 break;
             case R.id.iv_user_center_login:
             case R.id.personal_certen_login_now:
-                personalCenterPresenter.intentToLoginActivity();
+                //personalCenterPresenter.intentToLoginActivity();
                 break;
             case R.id.rl_pc_my_collect:
                 startActivity(new Intent(getContext(), MyCollectionActivity.class));
@@ -137,8 +155,10 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
                 personalCenterPresenter.checkUpdate();
                 break;
             case R.id.rl_pc_sign_out:
-                personalCenterPresenter.hintHeadPicture();
-                personalCenterPresenter.signOut();
+                if (isLogin) {
+                    AVUser.logOut();
+                    Toast.makeText(getActivity(), "退出登录成功", Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.iv_edit_nick_name:
                 personalCenterPresenter.editNickName();
@@ -159,24 +179,30 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
 
     @Override
     public void setHeadPicture() {
-        if (isLogin) {
-            setupNewHeadPicture();
-        }
         if (UserInfo.isNormalLogin) {
-            userLogin.setImageResource(R.drawable.touxiang);
-            nickName.setClickable(false);
-            nickName.setText(UserInfo.nickName);
+            //nickName.setClickable(false);
+            //nickName.setText(UserInfo.nickName);
         } else if (UserInfo.isQQLogin) {
-            userLogin.setImageResource(R.drawable.touxiang);
             personalCenterPresenter.setQQNickName();
-            nickName.setClickable(false);
+            //nickName.setClickable(false);
             editNickName.setVisibility(View.INVISIBLE);
         }
         if (UserInfo.nickName != null && UserInfo.nickName.equals("匿名用户")) {
-            userLogin.setImageResource(R.drawable.touxiang);
-            nickName.setClickable(false);
-            nickName.setText(UserInfo.nickName);
+            //nickName.setClickable(false);
+            //nickName.setText(UserInfo.nickName);
             editNickName.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void loadHeadPicture() {
+        if (AVUser.getCurrentUser() == null) {
+            Glide.with(getActivity()).load(R.drawable.user).into(userLogin);
+        } else {
+            if (AVUser.getCurrentUser().get("face_picture") == null) {
+                Glide.with(getActivity()).load(R.drawable.user).into(userLogin);
+            } else {
+                Glide.with(getActivity()).load(AVUser.getCurrentUser().get("face_picture")).into(userLogin);
+            }
         }
     }
 
@@ -203,35 +229,74 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
                 builder.show();
             }
         });*/
-        userLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "onClick: "+isLogin);
-                RxGalleryFinal
-                        .with(getActivity())
-                        .image()
-                        .radio()
-                        .crop()
-                        .imageLoader(ImageLoaderType.GLIDE)
-                        .subscribe(new RxBusResultSubscriber<ImageRadioResultEvent>() {
-                            @Override
-                            protected void onEvent(ImageRadioResultEvent imageRadioResultEvent)
-                                    throws Exception {
+        if (isLogin) {
+            userLogin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    RxGalleryFinal
+                            .with(getActivity())
+                            .image()
+                            .radio()
+                            .crop()
+                            .imageLoader(ImageLoaderType.GLIDE)
+                            .subscribe(new RxBusResultSubscriber<ImageRadioResultEvent>() {
+                                @Override
+                                protected void onEvent(ImageRadioResultEvent imageRadioResultEvent)
+                                        throws Exception {
+                                    upLodeToLeanCloud(imageRadioResultEvent);
+                                }
+                            })
+                            .openGallery();
+                }
+            });
+        } else {
+            try {
+                checkInfo();
+            } catch (Exception e) {
+                Log.d(TAG, "initView: " + e.getMessage());
+            }
+            userLogin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    personalCenterPresenter.intentToLoginActivity();
+                }
+            });
+        }
+    }
 
-                            }
-                        })
-                        .openGallery();
+    private void upLodeToLeanCloud(ImageRadioResultEvent imageRadioResultEvent) throws FileNotFoundException {
+        String fileName = AVUser.getCurrentUser().getObjectId();
+        final String pictureUri = imageRadioResultEvent.getResult().getCropPath();
+        final AVFile userPicture = AVFile.withAbsoluteLocalPath(fileName, pictureUri);
+        userPicture.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(AVException e) {
+                Log.d(TAG, "done: 保存头像成功");
+                AVUser.getCurrentUser().put("face_picture", userPicture.getUrl());
+                Glide.with(getActivity()).load(pictureUri).into(userLogin);
+                // TODO: 2016/9/9 取消进度条
+            }
+        }, new ProgressCallback() {
+            @Override
+            public void done(Integer integer) {
+                showDialog(integer);
             }
         });
     }
 
+    private void showDialog(Integer integer) {
+        // TODO: 2016/9/9 头像上传进度条
+    }
+
     @Override
     public void hintHeadPicture() {
-        userLogin.setImageResource(R.drawable.personl_certen_user);
-        userLogin.setClickable(true);
-        nickName.setClickable(true);
-        nickName.setText(getResources().getText(R.string.login_now));
-        editNickName.setVisibility(View.INVISIBLE);
+        if (!isLogin) {
+            userLogin.setImageResource(R.drawable.personl_certen_user);
+            userLogin.setClickable(true);
+            //nickName.setClickable(true);
+            //nickName.setText(getResources().getText(R.string.login_now));
+            editNickName.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
@@ -243,7 +308,6 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
     public Activity getMyActivity() {
         return PersonalCenterFragment.this.getActivity();
     }
-
 
     @Override
     public void hintEditNickButton() {
@@ -263,7 +327,6 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
 
     private void checkInfo() {
         if ((UserInfo.isQQLogin || UserInfo.isNormalLogin)) {
-            isLogin = true;
             if (!UserInfo.nickName.equals(getResources().getText(R.string.hint_user))) {
                 userLogin.setClickable(false);
                 editNickName.setVisibility(View.INVISIBLE);

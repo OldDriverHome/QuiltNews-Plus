@@ -8,6 +8,7 @@ import android.view.View;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVQuery;
+import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.GetCallback;
 import com.xushuzhan.quiltnews.APP;
 import com.xushuzhan.quiltnews.modle.network.config.UserInfo;
@@ -47,7 +48,7 @@ public class PersonalCenterPresenter {
     }
 
     public void signOut() {
-        if (UserInfo.isNormalLogin || UserInfo.isQQLogin) {
+       /* if (UserInfo.isNormalLogin || UserInfo.isQQLogin) {
             SharedPreferenceUtils.putString(APP.getAppContext(), UserInfo.ACCOUNT, null);
             SharedPreferenceUtils.putString(APP.getAppContext(), UserInfo.PASSWORD, null);
             SharedPreferenceUtils.putString(APP.getAppContext(), UserInfo.NICKNAME, null);
@@ -60,7 +61,8 @@ public class PersonalCenterPresenter {
             UserInfo.isNormalLogin = false;
         } else {
             iPersonalCenterView.showToast("请登录后再试");
-        }
+        }*/
+        AVUser.logOut();
     }
 
     public void editNickName() {
