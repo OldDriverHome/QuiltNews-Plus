@@ -207,28 +207,7 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
     }
 
     private void setupNewHeadPicture() {
-        //考虑换成多图选择器
-        /*final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("设置头像")
-                .setItems(R.array.take_picture, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which) {
-                            case 0:
-                                Log.d(TAG, "onClick: 拍照");
-                                break;
-                            case 1:
-                                Log.d(TAG, "onClick: 相册");
-                                break;
-                        }
-                    }
-                });
-        userLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                builder.show();
-            }
-        });*/
+
         if (isLogin) {
             userLogin.setOnClickListener(new View.OnClickListener() {
                 @Override

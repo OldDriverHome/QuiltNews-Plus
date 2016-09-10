@@ -1,22 +1,18 @@
 package com.xushuzhan.quiltnews.ui.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.jude.rollviewpager.adapter.StaticPagerAdapter;
 import com.xushuzhan.quiltnews.R;
-import com.xushuzhan.quiltnews.modle.been.NewsListBeen;
 import com.xushuzhan.quiltnews.modle.been.ViewPagersBeen;
 import com.xushuzhan.quiltnews.modle.network.config.NewsInfo;
 import com.xushuzhan.quiltnews.modle.network.net.RequestManagerBedNewsList;
-import com.xushuzhan.quiltnews.modle.network.net.RequestManagerNewsList;
-import com.xushuzhan.quiltnews.ui.activity.NewsDtailActivity;
+import com.xushuzhan.quiltnews.ui.view.BannerImageView;
 
 import java.util.ArrayList;
 
@@ -37,7 +33,7 @@ public class ViewPagerAdapter extends StaticPagerAdapter {
 
     @Override
     public View getView(ViewGroup container, final int position) {
-        final ImageView view = new ImageView(container.getContext());
+        final BannerImageView view = new BannerImageView(container.getContext());
         Subscriber<ViewPagersBeen> subscriber = new Subscriber<ViewPagersBeen>() {
             @Override
             public void onCompleted() {
@@ -53,6 +49,7 @@ public class ViewPagerAdapter extends StaticPagerAdapter {
             public void onNext(ViewPagersBeen viewPagersBeen) {
                 viewPagersContent = viewPagersBeen;
                 if(NewsInfo.isShowPic) {
+                    view.setText(viewPagersBeen.getNewslist().get(position).getTitle());
                     Glide.with(ctx)
                             .load(viewPagersBeen.getNewslist().get(position).getPicUrl())
                             .error(R.drawable.no_picture)
@@ -65,7 +62,8 @@ public class ViewPagerAdapter extends StaticPagerAdapter {
 
         RequestManagerBedNewsList.getInstance().getViewPagers(subscriber);
         view.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT
+                , ViewGroup.LayoutParams.MATCH_PARENT));
 
         return view;
     }
