@@ -37,6 +37,7 @@ public class ViewPagerAdapter extends StaticPagerAdapter {
     @Override
     public View getView(ViewGroup container, final int position) {
         final BannerImageView view = new BannerImageView(container.getContext());
+        view.setScaleType(ImageView.ScaleType.FIT_XY);
         Subscriber<ViewPagersBeen> subscriber = new Subscriber<ViewPagersBeen>() {
             @Override
             public void onCompleted() {

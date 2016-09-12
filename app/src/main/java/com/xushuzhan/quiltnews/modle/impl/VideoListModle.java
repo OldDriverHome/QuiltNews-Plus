@@ -23,6 +23,7 @@ import rx.Subscriber;
  * Created by xushuzhan on 2016/8/17.
  */
 public class VideoListModle {
+    List<VideoListBean.VideosBean> vides;
     public static final String TAG = "VideoListModle";
     VideoAdapter adapter;
     public ArrayList<FinalVideoListBean> videoList;
@@ -30,6 +31,7 @@ public class VideoListModle {
     public VideoListModle(VideoAdapter adapter) {
         this.adapter = adapter;
         videoList = new ArrayList<>();
+        vides= new ArrayList<VideoListBean.VideosBean>();
     }
 
     public void getVedioList(final String category, String count, String page) {
@@ -49,11 +51,11 @@ public class VideoListModle {
             public void onNext(VideoListBean videoListBean) {
                 Log.d(TAG, "onNext:>>>>> " + category);
                 //请求完成;
-                Log.d(TAG, "onNext: " + videoListBean.getVideos().get(0).getLink());
-                Log.d(TAG, "onNext: " + videoListBean.getVideos().get(1).getLink());
-                Log.d(TAG, "onNext: " + videoListBean.getVideos().get(2).getLink());
-                Log.d(TAG, "onNext: " + videoListBean.getVideos().get(3).getLink());
-                Log.d(TAG, "onNext: " + videoListBean.getVideos().get(4).getLink());
+                vides.add(videoListBean.getVideos().get(0));
+                vides.add(videoListBean.getVideos().get(1));
+                vides.add(videoListBean.getVideos().get(2));
+                vides.add(videoListBean.getVideos().get(3));
+                vides.add(videoListBean.getVideos().get(4));
                 findUsefulUrlById(videoListBean);
             }
         };
@@ -90,21 +92,35 @@ public class VideoListModle {
                     //返回符合条件的视频信息
                     if (list.size() > 0 && list.size() < 5) {
                         Log.d(TAG, "尴尬，视频部分更新了 ：" + list.size());
-                        for (int i = 0; i < 5; i++) {
-                            for (int j = 0; j < 5; j++) {
-                                if (!videoListBean.getVideos().get(i).getId().equals(list.get(j).get("video_id"))) {
-                                    findUrlUsefulByAPI(
-                                            videoListBean.getVideos().get(i).getLink(),
-                                            videoListBean.getVideos().get(i).getTitle(),
-                                            videoListBean.getVideos().get(i).getThumbnail(),
-                                            videoListBean.getVideos().get(i).getId(),
-                                            videoListBean.getVideos().get(i).getView_count(),
-                                            videoListBean.getVideos().get(i).getPublished()
-                                    );
-                                }
-                            }
+                       for(int j=0;j<list.size();j++) {
+                           FinalVideoListBean fvl = new FinalVideoListBean();
+                           fvl.setTitle(list.get(j).get("title").toString());
+                           fvl.setThumbnail_pic_s(list.get(j).get("pic_url").toString());
+                           fvl.setUrl(list.get(j).get("real_url").toString());
+                           fvl.setPlayCount(list.get(j).get("view_count").toString());
+                           fvl.setPublishTime(list.get(j).get("publish_time").toString());
+                           adapter.add(fvl);
+                           for (int i = 0; i < vides.size(); i++) {
+                               if (vides.get(i).getLink().equals(list.get(j).get("yk_url"))){
+                                   vides.remove(i);
+                               }
+
+                           }
+                       }
+
+                        for(int k=0;k<vides.size();k++){
+                            findUrlUsefulByAPI(
+                                    vides.get(k).getLink(),
+                                    vides.get(k).getTitle(),
+                                    vides.get(k).getThumbnail(),
+                                    vides.get(k).getId(),
+                                    vides.get(k).getView_count(),
+                                    vides.get(k).getPublished()
+                            );
+                            Log.d(TAG, "需要更新的视频是》》》》》》》"+vides.get(k).getTitle());
                         }
                     }
+
                     if (list.size() >= 5) {
                         try {
                             for (int i = 0; i < 5; i++) {
@@ -170,6 +186,7 @@ public class VideoListModle {
                 fvl.setPublishTime(publishTime);
                 Log.d(TAG, "所有视频的真是链接》》来自接口: " + videoBean.getMp4());
                 adapter.add(fvl);
+
                 Log.d(TAG, "添加到Recyclerview完成》》来自接口 ");
                 AVObject video = new AVObject("video");// 构建对象
                 video.put("video_id", videoId);
