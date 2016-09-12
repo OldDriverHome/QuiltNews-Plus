@@ -19,8 +19,6 @@ public class FirstTabFragmentPresenter {
         this.iFirstTabView = iFirstTabView;
     }
 
-
-
     public void showNewsList(){
             Subscriber<NewsListBeen> subscriber = new Subscriber<NewsListBeen>() {
 

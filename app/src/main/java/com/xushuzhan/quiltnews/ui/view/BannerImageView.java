@@ -2,13 +2,13 @@ package com.xushuzhan.quiltnews.ui.view;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.widget.ImageView;
 
 import com.xushuzhan.quiltnews.R;
@@ -24,35 +24,40 @@ public class BannerImageView extends ImageView {
     private Paint mPaint;
     private String mText;
     private BlurMaskFilter mBlurMaskFilter;
-    public static final int BLUR = 5;
+    private Bitmap mBitmap;
+    //public static final int BLUR = 3;
 
     public void setText(String text) {
         mText = text;
     }
 
+    public void setBitmap(Bitmap bitmap) {
+        mBitmap = bitmap;
+    }
+
     public BannerImageView(Context context) {
         super(context);
         mPaint = new Paint();
-        mBlurMaskFilter = new BlurMaskFilter(BLUR, BlurMaskFilter.Blur.SOLID);
+        //mBlurMaskFilter = new BlurMaskFilter(BLUR, BlurMaskFilter.Blur.SOLID);
     }
 
     public BannerImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mPaint = new Paint();
-        mBlurMaskFilter = new BlurMaskFilter(BLUR, BlurMaskFilter.Blur.SOLID);
+        //mBlurMaskFilter = new BlurMaskFilter(BLUR, BlurMaskFilter.Blur.SOLID);
     }
 
     public BannerImageView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mPaint = new Paint();
-        mBlurMaskFilter = new BlurMaskFilter(BLUR, BlurMaskFilter.Blur.SOLID);
+        //mBlurMaskFilter = new BlurMaskFilter(BLUR, BlurMaskFilter.Blur.SOLID);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public BannerImageView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         mPaint = new Paint();
-        mBlurMaskFilter = new BlurMaskFilter(BLUR, BlurMaskFilter.Blur.SOLID);
+        //mBlurMaskFilter = new BlurMaskFilter(BLUR, BlurMaskFilter.Blur.SOLID);
     }
 
     @Override
@@ -63,17 +68,26 @@ public class BannerImageView extends ImageView {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        Log.d(TAG, "onDraw: ");
         mPaint.reset();
-        mPaint.setColor(getResources().getColor(R.color.material_color_blue_gray_400));
+        mPaint.setColor(getResources().getColor(R.color.material_color_blue_gray_800));
+        mPaint.setAlpha(100);
         mPaint.setAntiAlias(true);
-        mPaint.setTextSize(43);
+        canvas.drawRect(0, (85 * getHeight()) / 100, getWidth(), getHeight(), mPaint);
+        mPaint.reset();
+        mPaint.setColor(getResources().getColor(R.color.material_color_white));
+        mPaint.setAntiAlias(true);
+        mPaint.setTextSize(45);
         mPaint.setTypeface(Typeface.DEFAULT_BOLD);
-        mPaint.setTextAlign(Paint.Align.CENTER);
-        mPaint.setMaskFilter(mBlurMaskFilter);
+        //mPaint.setTextAlign(Paint.Align.CENTER);
+        //mPaint.setMaskFilter(mBlurMaskFilter);
         if (mText != null) {
-            canvas.drawText(mText, getWidth() / 2, getHeight() * 17 / 20, mPaint);
+            canvas.drawText(cutOutText(mText), 20, getHeight() * 19 / 20, mPaint);
         }
         mPaint.reset();
+    }
+
+    private String cutOutText(String text) {
+        text = text.length() >= 16 ? text.substring(0, 16) + "..." : text;
+        return text;
     }
 }

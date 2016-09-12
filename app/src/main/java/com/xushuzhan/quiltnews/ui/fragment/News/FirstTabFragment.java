@@ -4,9 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,19 +23,12 @@ import com.jude.rollviewpager.hintview.ColorPointHintView;
 import com.xushuzhan.quiltnews.R;
 import com.xushuzhan.quiltnews.modle.been.NewsListBeen;
 import com.xushuzhan.quiltnews.modle.network.config.NewsInfo;
-import com.xushuzhan.quiltnews.modle.network.net.RequestManagerNewsList;
 import com.xushuzhan.quiltnews.presenter.FirstTabFragmentPresenter;
 import com.xushuzhan.quiltnews.ui.activity.NewsDtailActivity;
 import com.xushuzhan.quiltnews.ui.adapter.NewsAdapter;
 import com.xushuzhan.quiltnews.ui.adapter.ViewPagerAdapter;
 import com.xushuzhan.quiltnews.ui.iview.IFirstTabView;
 import com.xushuzhan.quiltnews.utils.Utils;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import retrofit2.http.Header;
-import rx.Subscriber;
 
 /**
  * Created by xushuzhan on 2016/8/16.
@@ -53,8 +44,10 @@ public class FirstTabFragment extends Fragment implements SwipeRefreshLayout.OnR
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mView = LayoutInflater.from(getContext()).inflate(R.layout.fragment_first_viewpager_fragment, container, false);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        mView = LayoutInflater.from(getContext()).inflate(R.layout.fragment_first_viewpager_fragment
+                , container, false);
         firstTabFragmentPresenter = new FirstTabFragmentPresenter(this);
         setRecyclerView();
         return mView;
@@ -69,10 +62,12 @@ public class FirstTabFragment extends Fragment implements SwipeRefreshLayout.OnR
             public View onCreateView(final ViewGroup parent) {
                 RollPagerView header = new RollPagerView(getContext());
                 ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter((getContext()));
-                header.setHintView(new ColorPointHintView(getContext(), Color.YELLOW, Color.GRAY));
-                header.setHintPadding(0, 0, 0, (int) Utils.convertDpToPixel(8, (getContext())));
+                header.setHintView(new ColorPointHintView(getContext(), getResources()
+                        .getColor(R.color.material_color_yellow_300), Color.GRAY));
+                header.setHintPadding(700, 0, 0, (int) Utils.convertDpToPixel(11, (getContext())));
                 header.setPlayDelay(4000);
-                header.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) Utils.convertDpToPixel(190, (getContext()))));
+                header.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT
+                        , (int) Utils.convertDpToPixel(190, (getContext()))));
                 header.setAdapter(viewPagerAdapter);
                 header.setOnItemClickListener(new OnItemClickListener() {
                     @Override
@@ -80,10 +75,14 @@ public class FirstTabFragment extends Fragment implements SwipeRefreshLayout.OnR
                         try {
                             NewsInfo.FROM_VIEW_PAGE = true;
                             Intent intent = new Intent(getContext(), NewsDtailActivity.class);
-                            intent.putExtra("url", ViewPagerAdapter.viewPagersContent.getNewslist().get(position).getUrl());
-                            intent.putExtra("title", ViewPagerAdapter.viewPagersContent.getNewslist().get(position).getTitle());
-                            intent.putExtra("pic_url", ViewPagerAdapter.viewPagersContent.getNewslist().get(position).getPicUrl());
-                            intent.putExtra("uniquekey", ViewPagerAdapter.viewPagersContent.getNewslist().get(position).getCtime());
+                            intent.putExtra("url", ViewPagerAdapter.viewPagersContent.getNewslist()
+                                    .get(position).getUrl());
+                            intent.putExtra("title", ViewPagerAdapter.viewPagersContent.getNewslist()
+                                    .get(position).getTitle());
+                            intent.putExtra("pic_url", ViewPagerAdapter.viewPagersContent.getNewslist()
+                                    .get(position).getPicUrl());
+                            intent.putExtra("uniquekey", ViewPagerAdapter.viewPagersContent
+                                    .getNewslist().get(position).getCtime());
                             startActivity(intent);
                         } catch (Exception e) {
                             Log.d(TAG, "onItemClick: " + e.getMessage());

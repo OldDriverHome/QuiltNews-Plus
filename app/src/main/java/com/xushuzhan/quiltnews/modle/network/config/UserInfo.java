@@ -55,6 +55,4 @@ public class UserInfo {
             nickName = SharedPreferenceUtils.getString(APP.getAppContext(),"nick_name");
         }
     }
-
-
 }

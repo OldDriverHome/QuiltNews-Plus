@@ -196,18 +196,20 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
 
     private void loadHeadPicture() {
         if (AVUser.getCurrentUser() == null) {
-            Glide.with(getActivity()).load(R.drawable.user).into(userLogin);
+            Log.d(TAG, "loadHeadPicture: 用户未登录");
+            Glide.with(getActivity()).load(R.drawable.ic_friend_1).into(userLogin);
         } else {
             if (AVUser.getCurrentUser().get("face_picture") == null) {
-                Glide.with(getActivity()).load(R.drawable.user).into(userLogin);
+                Log.d(TAG, "loadHeadPicture: 用户头像为空");
+                Glide.with(getActivity()).load(R.drawable.ic_friend_1).into(userLogin);
             } else {
-                Glide.with(getActivity()).load(AVUser.getCurrentUser().get("face_picture")).into(userLogin);
+                Log.d(TAG, "loadHeadPicture: 加载保存的头像");
+                Glide.with(getActivity()).load(AVUser.getCurrentUser().getString("face_picture")).into(userLogin);
             }
         }
     }
 
     private void setupNewHeadPicture() {
-
         if (isLogin) {
             userLogin.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -250,9 +252,15 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
         userPicture.saveInBackground(new SaveCallback() {
             @Override
             public void done(AVException e) {
-                Log.d(TAG, "done: 保存头像成功");
-                AVUser.getCurrentUser().put("face_picture", userPicture.getUrl());
-                Glide.with(getActivity()).load(pictureUri).into(userLogin);
+                if (e == null) {
+                    Log.d(TAG, "done: 保存头像成功");
+                    AVUser.getCurrentUser().put("face_picture", userPicture.getUrl());
+                    AVUser.getCurrentUser().saveInBackground();
+                    Log.d(TAG, "done: 头像地址" + userPicture.getUrl());
+                    Glide.with(getActivity()).load(pictureUri).into(userLogin);
+                } else {
+                    Log.d(TAG, "done: "+e);
+                }
                 // TODO: 2016/9/9 取消进度条
             }
         }, new ProgressCallback() {
