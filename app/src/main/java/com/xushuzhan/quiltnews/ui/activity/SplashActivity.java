@@ -2,9 +2,10 @@ package com.xushuzhan.quiltnews.ui.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
@@ -17,6 +18,7 @@ import com.xushuzhan.quiltnews.APP;
 import com.xushuzhan.quiltnews.R;
 import com.xushuzhan.quiltnews.modle.network.config.NewsInfo;
 import com.xushuzhan.quiltnews.modle.network.config.UserInfo;
+import com.xushuzhan.quiltnews.ui.guide.GuideActivity;
 import com.xushuzhan.quiltnews.utils.SharedPreferenceUtils;
 
 
@@ -52,7 +54,7 @@ public class SplashActivity extends Activity {
         } catch (Exception ee) {
             Log.d(TAG, "onCreate: " + ee.getMessage());
         }
-        handler.sendEmptyMessageDelayed(START_ACTIVITY, 2000);
+        handler.sendEmptyMessageDelayed(START_ACTIVITY, 1000);
     }
 
     private Handler handler = new Handler() {
@@ -61,7 +63,15 @@ public class SplashActivity extends Activity {
             super.handleMessage(msg);
             switch (msg.what) {
                 case START_ACTIVITY:
-                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                    SharedPreferences sharedPreferences = getSharedPreferences("isFirst", MODE_PRIVATE);
+                    boolean isFirst = sharedPreferences.getBoolean("isFirst", true);
+                    if (isFirst) {
+                        Intent intent = new Intent(SplashActivity.this, GuideActivity.class);
+                        startActivity(intent);
+                    } else {
+                        Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                        startActivity(intent);
+                    }
                     finish();
                     break;
             }

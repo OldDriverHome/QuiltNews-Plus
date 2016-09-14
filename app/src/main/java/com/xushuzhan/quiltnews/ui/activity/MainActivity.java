@@ -1,12 +1,11 @@
 package com.xushuzhan.quiltnews.ui.activity;
 
 import android.content.Intent;
-import android.os.Handler;
+import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.app.AppCompatDelegate;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageButton;
@@ -33,6 +32,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
+
+        SharedPreferences sharedPreferences = getSharedPreferences("isFirst", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("isFirst", false);
+        editor.apply();
     }
 
     private void initView() {
