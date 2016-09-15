@@ -72,7 +72,7 @@ public class BannerImageView extends ImageView {
         mPaint.setColor(getResources().getColor(R.color.material_color_blue_gray_800));
         mPaint.setAlpha(100);
         mPaint.setAntiAlias(true);
-        canvas.drawRect(0, (80 * getHeight()) / 100, getWidth(), getHeight(), mPaint);
+        canvas.drawRect(0, (85 * getHeight()) / 100, getWidth(), getHeight(), mPaint);
         mPaint.reset();
         mPaint.setColor(getResources().getColor(R.color.material_color_white));
         mPaint.setAntiAlias(true);

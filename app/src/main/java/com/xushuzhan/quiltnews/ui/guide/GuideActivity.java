@@ -18,6 +18,8 @@ import android.view.WindowManager;
 import com.viewpagerindicator.CirclePageIndicator;
 import com.xushuzhan.quiltnews.R;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 
 public class GuideActivity extends AppCompatActivity {
@@ -27,6 +29,8 @@ public class GuideActivity extends AppCompatActivity {
 
     final float PARALLAX_COEFFICIENT = 1.2f;
     final float DISTANCE_COEFFICIENT = 0.5f;
+
+    public static final String TAG = "GuideActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,5 +146,11 @@ public class GuideActivity extends AppCompatActivity {
     public static void start(Context context) {
         Intent starter = new Intent(context, GuideActivity.class);
         context.startActivity(starter);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

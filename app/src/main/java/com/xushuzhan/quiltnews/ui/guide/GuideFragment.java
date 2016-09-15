@@ -42,9 +42,7 @@ public class GuideFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         mTvGuide.setText(getArguments().getString(ARGUMENT_STRING));
         mIvGuide.setImageResource(getArguments().getInt(ARGUMENT_DRAWABLE));
-        AlphaAnimation alphaAnimation = new AlphaAnimation(0, 1);
-        alphaAnimation.setDuration(500);
-        mBtGuide.setAnimation(alphaAnimation);
+        mBtGuide.setVisibility(View.GONE);
         mBtGuide.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,5 +51,11 @@ public class GuideFragment extends Fragment {
                 getActivity().finish();
             }
         });
+        if ("尽在被窝资讯".equals(getArguments().getString(ARGUMENT_STRING))) {
+            AlphaAnimation alphaAnimation = new AlphaAnimation(0, 1);
+            alphaAnimation.setDuration(800);
+            mBtGuide.setAnimation(alphaAnimation);
+            mBtGuide.setVisibility(View.VISIBLE);
+        }
     }
 }

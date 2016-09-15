@@ -3,7 +3,7 @@ package com.xushuzhan.quiltnews.modle.network.net;
 import com.xushuzhan.quiltnews.modle.been.BedNewsListBeen;
 import com.xushuzhan.quiltnews.modle.been.ViewPagersBeen;
 import com.xushuzhan.quiltnews.modle.network.config.API;
-import com.xushuzhan.quiltnews.modle.network.serverce.ApiServerce;
+import com.xushuzhan.quiltnews.modle.network.serverce.ApiServer;
 
 import java.util.concurrent.TimeUnit;
 
@@ -23,7 +23,7 @@ public class RequestManagerBedNewsList {
 
     private Retrofit retrofit;
 
-    private ApiServerce apiServerce;
+    private ApiServer mApiServer;
 
     //构造方法私有
     private RequestManagerBedNewsList() {
@@ -38,7 +38,7 @@ public class RequestManagerBedNewsList {
                 .baseUrl(API.BAI_DU_BASE_URL)
                 .build();
 
-        apiServerce = retrofit.create(ApiServerce.class);
+        mApiServer = retrofit.create(ApiServer.class);
 
     }
 
@@ -60,7 +60,7 @@ public class RequestManagerBedNewsList {
 
     public void getNewsList(Subscriber<BedNewsListBeen> subscriber) {
 
-        apiServerce.getBeforeBedNewsList(API.BAIDU_API_APP_KEY)
+        mApiServer.getBeforeBedNewsList(API.BAIDU_API_APP_KEY)
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -69,7 +69,7 @@ public class RequestManagerBedNewsList {
 
 //    public void getViewPager(Subscriber<ViewPagerBeen> subscriber) {
 //
-//        apiServerce.getViewPagerContent(API.BAIDU_API_APP_KEY,"popular","2")
+//        mApiServer.getViewPagerContent(API.BAIDU_API_APP_KEY,"popular","2")
 //                .subscribeOn(Schedulers.io())
 //                .unsubscribeOn(Schedulers.io())
 //                .observeOn(AndroidSchedulers.mainThread())
@@ -77,7 +77,7 @@ public class RequestManagerBedNewsList {
 //    }
 
     public void getViewPagers(Subscriber<ViewPagersBeen> subscriber){
-        apiServerce.getViewPagersContent(API.BAIDU_API_APP_KEY)
+        mApiServer.getViewPagersContent(API.BAIDU_API_APP_KEY)
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

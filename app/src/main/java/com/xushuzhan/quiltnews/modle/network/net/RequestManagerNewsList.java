@@ -2,7 +2,7 @@ package com.xushuzhan.quiltnews.modle.network.net;
 
 import com.xushuzhan.quiltnews.modle.been.NewsListBeen;
 import com.xushuzhan.quiltnews.modle.network.config.API;
-import com.xushuzhan.quiltnews.modle.network.serverce.ApiServerce;
+import com.xushuzhan.quiltnews.modle.network.serverce.ApiServer;
 
 import java.util.concurrent.TimeUnit;
 
@@ -24,7 +24,7 @@ public class RequestManagerNewsList {
 
     private Retrofit retrofit;
 
-    private ApiServerce apiServerce;
+    private ApiServer mApiServer;
     //构造方法私有
     private RequestManagerNewsList() {
         //手动创建一个OkHttpClient并设置超时时间
@@ -38,7 +38,7 @@ public class RequestManagerNewsList {
                 .baseUrl(API.NEWS_LIST_BASE_URL)
                 .build();
 
-        apiServerce = retrofit.create(ApiServerce.class);
+        mApiServer = retrofit.create(ApiServer.class);
 
     }
 
@@ -60,7 +60,7 @@ public class RequestManagerNewsList {
 
     public void getNewsList(Subscriber<NewsListBeen> subscriber,String type){
 
-        apiServerce.getNewsList(type,API.JU_HE_API_KEY)
+        mApiServer.getNewsList(type,API.JU_HE_API_KEY)
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

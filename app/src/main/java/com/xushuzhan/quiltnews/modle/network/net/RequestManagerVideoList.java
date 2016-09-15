@@ -2,7 +2,7 @@ package com.xushuzhan.quiltnews.modle.network.net;
 
 import com.xushuzhan.quiltnews.modle.been.VideoListBean;
 import com.xushuzhan.quiltnews.modle.network.config.API;
-import com.xushuzhan.quiltnews.modle.network.serverce.ApiServerce;
+import com.xushuzhan.quiltnews.modle.network.serverce.ApiServer;
 
 import java.util.concurrent.TimeUnit;
 
@@ -22,7 +22,7 @@ public class RequestManagerVideoList {
 
     private Retrofit retrofit;
 
-    private ApiServerce apiServerce;
+    private ApiServer mApiServer;
     //构造方法私有
     private RequestManagerVideoList() {
         //手动创建一个OkHttpClient并设置超时时间
@@ -36,7 +36,7 @@ public class RequestManagerVideoList {
                 .baseUrl(API.YOUKU_BASE_URL)
                 .build();
 
-        apiServerce = retrofit.create(ApiServerce.class);
+        mApiServer = retrofit.create(ApiServer.class);
 
     }
 
@@ -53,7 +53,7 @@ public class RequestManagerVideoList {
 
     public void getVideoList(Subscriber<VideoListBean> subscriber, String category, String count, String page){
 
-        apiServerce.getVideoList(API.YOUKU_CLIENT_ID,category,count,page)
+        mApiServer.getVideoList(API.YOUKU_CLIENT_ID,category,count,page)
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
