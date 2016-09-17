@@ -5,6 +5,7 @@ import android.util.Log;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVQuery;
+import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.FindCallback;
 import com.xushuzhan.quiltnews.modle.been.MyCollectionBeen;
 import com.xushuzhan.quiltnews.modle.been.MyDiscussBeen;
@@ -34,7 +35,7 @@ public class MyCollectionPresenter {
 
     //显示某个用户的新闻收藏列表
     public void showNewsCollectionList() {
-        if (UserInfo.isNormalLogin  || UserInfo.isQQLogin ) {
+        if (AVUser.getCurrentUser()!=null) {
             //查询用户评论的所有新闻
             AVQuery<AVObject> query = new AVQuery<>("collection");
             query.orderByDescending("createdAt");

@@ -25,85 +25,91 @@
         android:layout_width="match_parent"
         android:layout_height="0.1dp"
         android:background="#ccc"
-        android:layout_above="@+id/rl_news_detail_discuss"
+        android:layout_above="@+id/view_comment1"
         />
-    <RelativeLayout
-        android:id="@+id/rl_news_detail_discuss"
+    <!--<RelativeLayout-->
+        <!--android:id="@+id/rl_news_detail_discuss"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="40dp"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:background="@color/discuss_window"-->
+        <!--&gt;-->
+
+        <!--<RelativeLayout-->
+            <!--android:id="@+id/rl_write_discuss"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:clickable="true"-->
+            <!--android:background="?android:attr/selectableItemBackground"-->
+            <!--android:layout_height="45dp">-->
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="说点什么吧..."-->
+                <!--android:textSize="15sp"-->
+                <!--android:layout_marginLeft="15dp"-->
+                <!--android:textColor="#ccc"-->
+                <!--android:id="@+id/textView3"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:layout_alignParentLeft="true"-->
+                <!--android:layout_alignParentStart="true" />-->
+            <!--<ImageView-->
+                <!--android:layout_width="20dp"-->
+                <!--android:layout_height="20dp"-->
+                <!--android:background="@drawable/write_discuss1"-->
+                <!--android:layout_alignBottom="@+id/textView3"-->
+                <!--android:layout_alignRight="@+id/imageView11"-->
+                <!--android:layout_alignEnd="@+id/imageView11" />-->
+            <!--<ImageView-->
+                <!--android:layout_width="200dp"-->
+                <!--android:layout_height="0.1dp"-->
+                <!--android:background="#ccc"-->
+                <!--android:layout_marginBottom="10dp"-->
+                <!--android:layout_marginLeft="15dp"-->
+                <!--android:id="@+id/imageView11"-->
+                <!--android:layout_alignParentBottom="true"-->
+                <!--android:layout_alignParentLeft="true"-->
+                <!--android:layout_alignParentStart="true" />-->
+        <!--</RelativeLayout>-->
+
+        <!--<CheckBox-->
+            <!--android:id="@+id/cb_news_detail_collect"-->
+            <!--android:layout_width="23dp"-->
+            <!--android:layout_height="23dp"-->
+            <!--android:button="@drawable/collect_selector"-->
+            <!--android:layout_marginRight="20dp"-->
+            <!--android:layout_marginEnd="20dp"-->
+            <!--android:layout_alignBottom="@+id/bt_news_detail_discuss"-->
+            <!--android:layout_toLeftOf="@+id/bt_news_detail_discuss"-->
+            <!--android:layout_toStartOf="@+id/bt_news_detail_discuss" />-->
+        <!--<Button-->
+            <!--android:id="@+id/bt_news_detail_discuss"-->
+            <!--android:layout_width="20dp"-->
+            <!--android:layout_height="20dp"-->
+            <!--android:src="?android:attr/selectableItemBackground"-->
+            <!--android:background="@drawable/discuss"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_toLeftOf="@+id/tv_news_detail_discuss_count"-->
+            <!--android:layout_toStartOf="@+id/tv_news_detail_discuss_count" />-->
+        <!--<TextView-->
+            <!--android:id="@+id/tv_news_detail_discuss_count"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="0"-->
+            <!--android:layout_marginLeft="5dp"-->
+            <!--android:layout_marginRight="10dp"-->
+            <!--android:textColor="#ccc"-->
+            <!--android:textSize="12sp"-->
+            <!--android:background="?android:attr/selectableItemBackground"-->
+            <!--android:layout_alignTop="@+id/bt_news_detail_discuss"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_alignParentEnd="true" />-->
+    <!--</RelativeLayout>-->
+
+    <include
+        android:id="@+id/view_comment1"
+        layout="@layout/view_comment"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="41dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/discuss_window"
-
-
-        >
-        <RelativeLayout
-            android:id="@+id/rl_write_discuss"
-            android:layout_width="wrap_content"
-            android:clickable="true"
-            android:background="?android:attr/selectableItemBackground"
-            android:layout_height="45dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="说点什么吧..."
-                android:textSize="15sp"
-                android:layout_marginLeft="15dp"
-                android:textColor="#ccc"
-                android:id="@+id/textView3"
-                android:layout_centerVertical="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:background="@drawable/write_discuss1"
-                android:layout_alignBottom="@+id/textView3"
-                android:layout_alignRight="@+id/imageView11"
-                android:layout_alignEnd="@+id/imageView11" />
-            <ImageView
-                android:layout_width="200dp"
-                android:layout_height="0.1dp"
-                android:background="#ccc"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="15dp"
-                android:id="@+id/imageView11"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
-        </RelativeLayout>
-
-        <CheckBox
-            android:id="@+id/cb_news_detail_collect"
-            android:layout_width="23dp"
-            android:layout_height="23dp"
-            android:button="@drawable/collect_selector"
-            android:layout_marginRight="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_alignBottom="@+id/bt_news_detail_discuss"
-            android:layout_toLeftOf="@+id/bt_news_detail_discuss"
-            android:layout_toStartOf="@+id/bt_news_detail_discuss" />
-        <Button
-            android:id="@+id/bt_news_detail_discuss"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="?android:attr/selectableItemBackground"
-            android:background="@drawable/discuss"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/tv_news_detail_discuss_count"
-            android:layout_toStartOf="@+id/tv_news_detail_discuss_count" />
-        <TextView
-            android:id="@+id/tv_news_detail_discuss_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="0"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="10dp"
-            android:textColor="#ccc"
-            android:textSize="12sp"
-            android:background="?android:attr/selectableItemBackground"
-            android:layout_alignTop="@+id/bt_news_detail_discuss"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
-
-    </RelativeLayout>
+        />
 </RelativeLayout>

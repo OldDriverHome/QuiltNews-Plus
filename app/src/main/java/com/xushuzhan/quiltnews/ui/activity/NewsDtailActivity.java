@@ -13,6 +13,7 @@ import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -26,6 +27,7 @@ import com.xushuzhan.quiltnews.modle.network.config.NewsInfo;
 import com.xushuzhan.quiltnews.modle.network.config.UserInfo;
 import com.xushuzhan.quiltnews.presenter.NewsDetailPresenter;
 import com.xushuzhan.quiltnews.ui.iview.INewsDetailView;
+import com.xushuzhan.quiltnews.ui.view.LikeButtonView;
 import com.xushuzhan.quiltnews.utils.DialogPopup;
 import com.xushuzhan.quiltnews.utils.SharedPreferenceUtils;
 
@@ -37,15 +39,22 @@ public class NewsDtailActivity extends AppCompatActivity implements INewsDetailV
     String uniqueKey;
     WebView webView;
     NewsDetailPresenter newsDetailPresenter;
-    RelativeLayout rlNewsDetailDiscuss;
-    Button allNews;
-    TextView allNewsCount;
-    ImageButton ReadMode;
+//    RelativeLayout rlNewsDetailDiscuss;
+//    Button allNews;
+//    TextView allNewsCount;
+
+    RelativeLayout allComment;
+    TextView commentCount;
+    Button sendComment;
+    EditText commentEditText;
+
+    ImageView collect;
+
     ImageButton back;
     TextView titleToolbar;
-    TextView discussCount;
-    CheckBox collect;
-
+ //   TextView discussCount;
+   // CheckBox collect;
+    LikeButtonView likeButtonView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,15 +108,19 @@ public class NewsDtailActivity extends AppCompatActivity implements INewsDetailV
             });
             settings.setTextZoom(100);
         }
-        rlNewsDetailDiscuss = (RelativeLayout) findViewById(R.id.rl_write_discuss);
-        rlNewsDetailDiscuss.setOnClickListener(this);
-        allNews = (Button) findViewById(R.id.bt_news_detail_discuss);
-        allNews.setOnClickListener(this);
-        allNewsCount = (TextView) findViewById(R.id.tv_news_detail_discuss_count);
-        allNewsCount.setOnClickListener(this);
-        ReadMode = (ImageButton) findViewById(R.id.ib_toobar_read_mode);
+//        rlNewsDetailDiscuss = (RelativeLayout) findViewById(R.id.rl_write_discuss);
+//        rlNewsDetailDiscuss.setOnClickListener(this);
+//        allNews = (Button) findViewById(R.id.bt_news_detail_discuss);
+//        allNews.setOnClickListener(this);
+//        allNewsCount = (TextView) findViewById(R.id.tv_news_detail_discuss_count);
+//        allNewsCount.setOnClickListener(this);
 
-        ReadMode.setVisibility(View.INVISIBLE);
+        allComment = (RelativeLayout) findViewById(R.id.allComments);
+        allComment.setOnClickListener(this);
+        commentCount = (TextView) findViewById(R.id.tv_comments_count);
+        sendComment = (Button) findViewById(R.id.bt_send_comment);
+        sendComment.setOnClickListener(this);
+        commentEditText = (EditText) findViewById(R.id.et_comments_content);
 
         back = (ImageButton) findViewById(R.id.ib_toolbar_back);
         back.setOnClickListener(new View.OnClickListener() {
@@ -120,11 +133,25 @@ public class NewsDtailActivity extends AppCompatActivity implements INewsDetailV
         titleToolbar = (TextView) findViewById(R.id.tv_title_toolbar);
         titleToolbar.setVisibility(View.INVISIBLE);
 
-        discussCount = (TextView) findViewById(R.id.tv_news_detail_discuss_count);
+        //discussCount = (TextView) findViewById(R.id.tv_comments_count);
 
-        collect = (CheckBox) findViewById(R.id.cb_news_detail_collect);
-        collect.setOnCheckedChangeListener(this);
-        newsDetailPresenter.showDiscussCount();
+//        collect = (CheckBox) findViewById(R.id.cb_news_detail_collect);
+//        collect.setOnCheckedChangeListener(this);
+    //    newsDetailPresenter.showDiscussCount();
+
+        likeButtonView = (LikeButtonView) findViewById(R.id.like_button);
+        likeButtonView.setOnLikeButtonClickedListenner(new LikeButtonView.OnLikeButtonClickedListenner() {
+            @Override
+            public void onLikeButtonClick(boolean isChecked) {
+                if(isChecked){
+                    newsDetailPresenter.collect();
+                }else if (!isChecked){
+                    newsDetailPresenter.unCollect();
+                }
+            }
+        });
+
+        collect= (ImageView) findViewById(R.id.ivStar);
     }
 
     @Override
@@ -145,8 +172,8 @@ public class NewsDtailActivity extends AppCompatActivity implements INewsDetailV
 
     @Override
     public void setDiscussCount(String count) {
-        allNewsCount.setText(count);
-
+        //allNewsCount.setText(count);
+        commentCount.setText(count);
     }
 
     @Override
@@ -181,12 +208,12 @@ public class NewsDtailActivity extends AppCompatActivity implements INewsDetailV
 
     @Override
     public void addDiscussCount() {
-        discussCount.setText((Integer.parseInt(discussCount.getText().toString()) + 1) + "");
+        commentCount.setText((Integer.parseInt(commentCount.getText().toString()) + 1) + "");
     }
 
     @Override
     public void setColectButton() {
-        collect.setChecked(true);
+        collect.setImageResource(R.drawable.ic_star_rate_on);
     }
 
 
@@ -199,12 +226,16 @@ public class NewsDtailActivity extends AppCompatActivity implements INewsDetailV
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.rl_write_discuss:
-                newsDetailPresenter.showPopupWindow();
-
+            case R.id.bt_send_comment:
+                try {
+                    newsDetailPresenter.sendNewsDiscuss(commentEditText.getText().toString());
+                }catch (Exception e){
+                    Log.d(TAG, "onClick: "+e.getMessage());
+                }
+                Toast.makeText(NewsDtailActivity.this, "评论成功", Toast.LENGTH_SHORT).show();
+                commentEditText.setText("");
                 break;
-            case R.id.bt_news_detail_discuss:
-            case R.id.tv_news_detail_discuss_count:
+            case R.id.allComments:
                 newsDetailPresenter.intentToAllDiscuss();
                 break;
             default:

@@ -49,7 +49,7 @@ public class LoginPresenter {
                         SharedPreferenceUtils.putString(APP.getAppContext(),"nick_name","匿名用户");
                         UserInfo.userName = account;
                         UserInfo.nickName = "匿名用户";
-                        UserInfo.isNormalLogin = true;
+                  //      UserInfo.isNormalLogin = true;
                         iloginView.toMainActivity();
                     } else {
                         iloginView.showToast("用户名或密码错误，请重试");

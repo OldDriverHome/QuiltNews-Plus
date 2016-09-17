@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVQuery;
+import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.FindCallback;
 import com.xushuzhan.quiltnews.modle.been.NewsDiscussBeen;
 import com.xushuzhan.quiltnews.modle.network.config.UserInfo;
@@ -84,7 +85,7 @@ public class AllDiscussPresenter {
     //发表评论
     public void sendDiscuss() {
 
-        if (UserInfo.isNormalLogin||UserInfo.isQQLogin) {
+        if (AVUser.getCurrentUser()!=null) {
             url = iAllDiscussView.getNewsUrl();
             title = iAllDiscussView.getNewsTitle();
             picUrl = iAllDiscussView.getNewsPicUrl();

@@ -32,12 +32,12 @@ public class QQBaseUiListener implements IUiListener {
                         Log.d(TAG, "onComplete: "+token);
                         Log.d(TAG, "onComplete: "+expires);
                         Log.d(TAG, "onComplete: "+openId);
-                UserInfo.isQQLogin = true;
+               // UserInfo.isQQLogin = true;
 
                 SharedPreferenceUtils.putString(APP.getAppContext(),"open_id",openId);
                 SharedPreferenceUtils.putString(APP.getAppContext(),"token",token);
                 SharedPreferenceUtils.putString(APP.getAppContext(),UserInfo.NICKNAME,"匿名用户");
-                UserInfo.isQQLogin = true;
+            //    UserInfo.isQQLogin = true;
                 UserInfo.nickName = "匿名用户";
                 UserInfo.userName = openId;
                 final AVUser user = new AVUser();

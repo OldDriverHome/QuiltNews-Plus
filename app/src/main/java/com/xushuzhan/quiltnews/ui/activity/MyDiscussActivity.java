@@ -15,12 +15,15 @@ import com.xushuzhan.quiltnews.R;
 import com.xushuzhan.quiltnews.presenter.MyDiscussPresenter;
 import com.xushuzhan.quiltnews.ui.adapter.MyDiscussAdapter;
 import com.xushuzhan.quiltnews.ui.iview.IMyDiscussView;
+import com.xushuzhan.quiltnews.ui.view.LikeButtonView;
 
 public class MyDiscussActivity extends AppCompatActivity implements IMyDiscussView {
     EasyRecyclerView easyRecyclerView;
     MyDiscussAdapter myDiscussAdapter;
     MyDiscussPresenter myDiscussPresenter;
-    ImageButton ReadMode;
+
+    LikeButtonView likeButtonView;
+
     ImageButton back;
     TextView titleToolbar;
     @Override
@@ -31,14 +34,14 @@ public class MyDiscussActivity extends AppCompatActivity implements IMyDiscussVi
         initData();
         myDiscussPresenter = new MyDiscussPresenter(myDiscussAdapter,this);
         myDiscussPresenter.showNewsDiscussList();
+        likeButtonView = (LikeButtonView) findViewById(R.id.like_button);
+        likeButtonView.setVisibility(View.INVISIBLE);
     }
 
 
 
     private void initView() {
     easyRecyclerView = (EasyRecyclerView) findViewById(R.id.recycler_view_my_discuss);
-        ReadMode = (ImageButton) findViewById(R.id.ib_toobar_read_mode);
-        ReadMode.setVisibility(View.INVISIBLE);
 
         back= (ImageButton) findViewById(R.id.ib_toolbar_back);
         back.setOnClickListener(new View.OnClickListener() {

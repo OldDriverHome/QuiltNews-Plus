@@ -15,12 +15,14 @@ import com.xushuzhan.quiltnews.R;
 import com.xushuzhan.quiltnews.presenter.MyCollectionPresenter;
 import com.xushuzhan.quiltnews.ui.adapter.MyCollectionAdapter;
 import com.xushuzhan.quiltnews.ui.iview.IMyCollectionView;
+import com.xushuzhan.quiltnews.ui.view.LikeButtonView;
 
 public class MyCollectionActivity extends AppCompatActivity implements IMyCollectionView {
 EasyRecyclerView easyRecyclerView;
     MyCollectionAdapter adapter;
     MyCollectionPresenter myCollectionPresenter;
-    ImageButton ReadMode;
+
+    LikeButtonView likeButtonView;
     ImageButton back;
     TextView titleToolbar;
     @Override
@@ -30,6 +32,9 @@ EasyRecyclerView easyRecyclerView;
         initView();
         myCollectionPresenter = new MyCollectionPresenter(this,adapter);
         myCollectionPresenter.showNewsCollectionList();
+
+        likeButtonView = (LikeButtonView) findViewById(R.id.like_button);
+        likeButtonView.setVisibility(View.INVISIBLE);
     }
 
     private void initView() {
@@ -44,8 +49,6 @@ EasyRecyclerView easyRecyclerView;
             }
         });
 
-        ReadMode = (ImageButton) findViewById(R.id.ib_toobar_read_mode);
-        ReadMode.setVisibility(View.INVISIBLE);
 
         back= (ImageButton) findViewById(R.id.ib_toolbar_back);
         back.setOnClickListener(new View.OnClickListener() {

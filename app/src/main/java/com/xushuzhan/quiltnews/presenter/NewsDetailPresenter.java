@@ -8,6 +8,7 @@ import android.widget.Toast;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVQuery;
+import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.FindCallback;
 import com.avos.avoscloud.SaveCallback;
 import com.xushuzhan.quiltnews.APP;
@@ -15,6 +16,7 @@ import com.xushuzhan.quiltnews.modle.been.NewsDiscussBeen;
 import com.xushuzhan.quiltnews.modle.network.config.NewsInfo;
 import com.xushuzhan.quiltnews.modle.network.config.UserInfo;
 import com.xushuzhan.quiltnews.ui.iview.INewsDetailView;
+import com.xushuzhan.quiltnews.ui.view.LikeButtonView;
 import com.xushuzhan.quiltnews.utils.DialogPopup;
 import com.xushuzhan.quiltnews.utils.SharedPreferenceUtils;
 
@@ -51,10 +53,7 @@ public class NewsDetailPresenter {
             @Override
             public void done(List<AVObject> list, AVException e) {
                 try {
-
                     iNewsDetailView.setDiscussCount(list.size() + "");
-
-
                 } catch (Exception ee) {
 
                 }
@@ -64,11 +63,10 @@ public class NewsDetailPresenter {
         });
 
     }
-
     public void showPopupWindow() {
         dialogPopup = new DialogPopup(iNewsDetailView.getActivity(), "请输入评论的内容", "发送");
         dialogPopup.showPopupWindow();
-        if (UserInfo.isQQLogin || UserInfo.isNormalLogin) {
+        if (AVUser.getCurrentUser()!=null) {
             dialogPopup.setOnItemClickListener(new DialogPopup.OnSendButtonClickListener() {
                 @Override
                 public void onSendClick(View view, String content) {
@@ -98,7 +96,7 @@ public class NewsDetailPresenter {
     }
 
     public void collect() {
-        if (UserInfo.isQQLogin || UserInfo.isNormalLogin) {
+        if (AVUser.getCurrentUser()!=null) {
             final AVObject news = new AVObject("collection");// 构建对象
             news.put(NewsInfo.USER_NAME, UserInfo.userName);
             news.put(NewsInfo.NICK_NAME, UserInfo.nickName);
@@ -137,16 +135,36 @@ public class NewsDetailPresenter {
                 if (e == null) {
                     if (list.size() != 0) {
                         NewsInfo.isCollect = true;
+                        Log.d(TAG, "done: 已经收藏了！");
+                        LikeButtonView.isChecked=true;
                         iNewsDetailView.setColectButton();
-                        Log.d(TAG, "done: ");
                     } else if (list.size() == 0) {
-                        NewsInfo.isCollect = false;
+                        LikeButtonView.isChecked=false;
+                        Log.d(TAG, "done: 没有收藏");
                     }
                 }
             }
         });
     }
 
+    public void sendNewsDiscuss(String content){
+        if (content != null) {
+            AVObject news = new AVObject("comment");// 构建对象
+            news.put(NewsInfo.USER_NAME, AVUser.getCurrentUser().getUsername());
+            news.put(NewsInfo.NICK_NAME, SharedPreferenceUtils.getString(APP.getAppContext(),"nick_name"));
+            news.put(NewsInfo.NEWS_UNIQUEKEY, iNewsDetailView.getNewsUniqueKey());
+            news.put(NewsInfo.DISCUSS_CONTENT, content);
+            news.put(NewsInfo.NEWS_TITLE, iNewsDetailView.getNewsTitle());
+            news.put(NewsInfo.NEWS_URL, iNewsDetailView.getNewsUrl());
+            news.put(NewsInfo.NEWS_PIC_URL, iNewsDetailView.getNewsPicUrl());
+            news.saveInBackground();// 保存到服务端
+            iNewsDetailView.addDiscussCount();
+            iNewsDetailView.intentToAllDiscuss();
+        } else {
+            iNewsDetailView.showToast("评论内容不能为空");
+        }
+
+    }
 
 }
 

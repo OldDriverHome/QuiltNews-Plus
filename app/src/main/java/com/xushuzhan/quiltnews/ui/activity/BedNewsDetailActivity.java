@@ -17,7 +17,7 @@ public class BedNewsDetailActivity extends AppCompatActivity {
     String url;
     WebView webView;
     ImageButton back;
-    ImageButton ReadMode;
+
     TextView title;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +41,6 @@ public class BedNewsDetailActivity extends AppCompatActivity {
         });
         webView.loadUrl(url);
 
-        ReadMode = (ImageButton) findViewById(R.id.ib_toobar_read_mode);
-        ReadMode.setVisibility(View.INVISIBLE);
         back= (ImageButton) findViewById(R.id.ib_toolbar_back);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
