@@ -6,4 +6,5 @@ package com.xushuzhan.quiltnews.ui.iview;
 public interface IBedNewsListView {
     void showToast(String content);
     void intentToBenNewsDtail(String url);
+    void intentToSlidesActivity(String aid);
 }

@@ -63,43 +63,43 @@ public class NewsDetailPresenter {
         });
 
     }
-    public void showPopupWindow() {
-        dialogPopup = new DialogPopup(iNewsDetailView.getActivity(), "请输入评论的内容", "发送");
-        dialogPopup.showPopupWindow();
-        if (AVUser.getCurrentUser()!=null) {
-            dialogPopup.setOnItemClickListener(new DialogPopup.OnSendButtonClickListener() {
-                @Override
-                public void onSendClick(View view, String content) {
-                    Log.d(TAG, "onSendClick: " + content);
-                    if (content != null) {
-                        AVObject news = new AVObject("comment");// 构建对象
-                        news.put(NewsInfo.USER_NAME, UserInfo.userName);
-                        news.put(NewsInfo.NICK_NAME, UserInfo.nickName);
-                        news.put(NewsInfo.NEWS_UNIQUEKEY, iNewsDetailView.getNewsUniqueKey());
-                        news.put(NewsInfo.DISCUSS_CONTENT, content);
-                        news.put(NewsInfo.NEWS_TITLE, iNewsDetailView.getNewsTitle());
-                        news.put(NewsInfo.NEWS_URL, iNewsDetailView.getNewsUrl());
-                        news.put(NewsInfo.NEWS_PIC_URL, iNewsDetailView.getNewsPicUrl());
-                        news.saveInBackground();// 保存到服务端
-                        iNewsDetailView.addDiscussCount();
-                        dialogPopup.dismiss();
-
-                    } else {
-                        iNewsDetailView.showToast("评论内容不能为空");
-                    }
-                }
-            });
-        } else {
-            iNewsDetailView.showToast("请先登录");
-            dialogPopup.dismiss();
-        }
-    }
+//    public void showPopupWindow() {
+//        dialogPopup = new DialogPopup(iNewsDetailView.getActivity(), "请输入评论的内容", "发送");
+//        dialogPopup.showPopupWindow();
+//        if (AVUser.getCurrentUser()!=null) {
+//            dialogPopup.setOnItemClickListener(new DialogPopup.OnSendButtonClickListener() {
+//                @Override
+//                public void onSendClick(View view, String content) {
+//                    Log.d(TAG, "onSendClick: " + content);
+//                    if (content != null) {
+//                        AVObject news = new AVObject("comment");// 构建对象
+//                        news.put(NewsInfo.USER_NAME, UserInfo.userName);
+//                        news.put(NewsInfo.NICK_NAME, UserInfo.nickName);
+//                        news.put(NewsInfo.NEWS_UNIQUEKEY, iNewsDetailView.getNewsUniqueKey());
+//                        news.put(NewsInfo.DISCUSS_CONTENT, content);
+//                        news.put(NewsInfo.NEWS_TITLE, iNewsDetailView.getNewsTitle());
+//                        news.put(NewsInfo.NEWS_URL, iNewsDetailView.getNewsUrl());
+//                        news.put(NewsInfo.NEWS_PIC_URL, iNewsDetailView.getNewsPicUrl());
+//                        news.saveInBackground();// 保存到服务端
+//                        iNewsDetailView.addDiscussCount();
+//                        dialogPopup.dismiss();
+//
+//                    } else {
+//                        iNewsDetailView.showToast("评论内容不能为空");
+//                    }
+//                }
+//            });
+//        } else {
+//            iNewsDetailView.showToast("请先登录");
+//            dialogPopup.dismiss();
+//        }
+//    }
 
     public void collect() {
         if (AVUser.getCurrentUser()!=null) {
             final AVObject news = new AVObject("collection");// 构建对象
-            news.put(NewsInfo.USER_NAME, UserInfo.userName);
-            news.put(NewsInfo.NICK_NAME, UserInfo.nickName);
+            news.put(NewsInfo.USER_NAME, SharedPreferenceUtils.getString(APP.getAppContext(),"user_name"));
+            news.put(NewsInfo.NICK_NAME, SharedPreferenceUtils.getString(APP.getAppContext(),"nick_name"));
             news.put(NewsInfo.NEWS_UNIQUEKEY, iNewsDetailView.getNewsUniqueKey());
             news.put(NewsInfo.NEWS_TITLE, iNewsDetailView.getNewsTitle());
             news.put(NewsInfo.NEWS_URL, iNewsDetailView.getNewsUrl());
@@ -148,22 +148,26 @@ public class NewsDetailPresenter {
     }
 
     public void sendNewsDiscuss(String content){
-        if (content != null) {
-            AVObject news = new AVObject("comment");// 构建对象
-            news.put(NewsInfo.USER_NAME, AVUser.getCurrentUser().getUsername());
-            news.put(NewsInfo.NICK_NAME, SharedPreferenceUtils.getString(APP.getAppContext(),"nick_name"));
-            news.put(NewsInfo.NEWS_UNIQUEKEY, iNewsDetailView.getNewsUniqueKey());
-            news.put(NewsInfo.DISCUSS_CONTENT, content);
-            news.put(NewsInfo.NEWS_TITLE, iNewsDetailView.getNewsTitle());
-            news.put(NewsInfo.NEWS_URL, iNewsDetailView.getNewsUrl());
-            news.put(NewsInfo.NEWS_PIC_URL, iNewsDetailView.getNewsPicUrl());
-            news.saveInBackground();// 保存到服务端
-            iNewsDetailView.addDiscussCount();
-            iNewsDetailView.intentToAllDiscuss();
-        } else {
-            iNewsDetailView.showToast("评论内容不能为空");
+        if(AVUser.getCurrentUser()!=null) {
+            if (content != null) {
+                AVObject news = new AVObject("comment");// 构建对象
+                news.put(NewsInfo.USER_NAME, AVUser.getCurrentUser().getUsername());
+                news.put(NewsInfo.NICK_NAME, SharedPreferenceUtils.getString(APP.getAppContext(), "nick_name"));
+                news.put(NewsInfo.NEWS_UNIQUEKEY, iNewsDetailView.getNewsUniqueKey());
+                news.put(NewsInfo.DISCUSS_CONTENT, content);
+                news.put(NewsInfo.NEWS_TITLE, iNewsDetailView.getNewsTitle());
+                news.put(NewsInfo.NEWS_URL, iNewsDetailView.getNewsUrl());
+                news.put(NewsInfo.NEWS_PIC_URL, iNewsDetailView.getNewsPicUrl());
+                news.saveInBackground();// 保存到服务端
+                iNewsDetailView.showToast("评论成功");
+                iNewsDetailView.addDiscussCount();
+                iNewsDetailView.intentToAllDiscuss();
+            } else {
+                iNewsDetailView.showToast("评论内容不能为空");
+            }
+        }else {
+            iNewsDetailView.showToast("请先登录");
         }
-
     }
 
 }

@@ -80,5 +80,6 @@ public class MyCollectionPresenter {
                 newsList.get(position).getPicUrl(),
                 newsList.get(position).getUniqueKey()
         );
+        Log.d(TAG, "done:"+newsList.get(position).getNewsUrl());
     }
 }

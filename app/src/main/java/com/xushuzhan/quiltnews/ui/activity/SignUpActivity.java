@@ -90,6 +90,7 @@ public class SignUpActivity extends AppCompatActivity implements ISignUpView, Vi
 
     @Override
     public void moveToMainActivity() {
+        finish();
         startActivity(new Intent(SignUpActivity.this, MainActivity.class));
     }
 

@@ -32,7 +32,7 @@ import com.xushuzhan.quiltnews.utils.DialogPopup;
 import com.xushuzhan.quiltnews.utils.SharedPreferenceUtils;
 
 public class NewsDtailActivity extends AppCompatActivity implements INewsDetailView, View.OnClickListener, CompoundButton.OnCheckedChangeListener {
-    public static final String TAG = "NewsDtailActivity";
+    public static final String TAG = "NewsDtailActivityTAG";
     String url;
     String title;
     String picUrl;
@@ -69,7 +69,7 @@ public class NewsDtailActivity extends AppCompatActivity implements INewsDetailV
         uniqueKey = intent.getStringExtra("uniquekey");
 
 
-        Log.d(TAG, "onCreate: " + title + ">>>" + picUrl + ">>>" + uniqueKey);
+        Log.d(TAG, "onCreate: " + title + ">>>" + picUrl + ">>>" + uniqueKey+">>>"+url);
         newsDetailPresenter = new NewsDetailPresenter(this);
         newsDetailPresenter.setCollect();
         initView();
@@ -86,6 +86,7 @@ public class NewsDtailActivity extends AppCompatActivity implements INewsDetailV
         if(!NewsInfo.isShowPic){
             settings.setLoadsImagesAutomatically(false);  //不支持自动加载图片
         }
+
         if(NewsInfo.FROM_VIEW_PAGE) {
             settings.setJavaScriptEnabled(true);
             webView.setWebViewClient(new WebViewClient() {
@@ -96,7 +97,18 @@ public class NewsDtailActivity extends AppCompatActivity implements INewsDetailV
                 }
             });
             NewsInfo.FROM_VIEW_PAGE = false;
-        }else {
+            Log.d(TAG, "initView: 来自轮播图");
+        }else if(NewsInfo.FROM_MY_COLLECTION){
+            settings.setJavaScriptEnabled(true);
+            webView.setWebViewClient(new WebViewClient() {
+                @Override
+                public boolean shouldOverrideUrlLoading(WebView view, String
+                        url) {
+                    return false; // 不允许打开新的网页
+                }
+            });
+            NewsInfo.FROM_MY_COLLECTION = false;
+        } else {
             settings.setJavaScriptEnabled(false);
             webView.setWebViewClient(new WebViewClient() {
                 @Override
@@ -107,7 +119,10 @@ public class NewsDtailActivity extends AppCompatActivity implements INewsDetailV
                 }
             });
             settings.setTextZoom(100);
+            Log.d(TAG, "initView: 来自其他");
         }
+
+
 //        rlNewsDetailDiscuss = (RelativeLayout) findViewById(R.id.rl_write_discuss);
 //        rlNewsDetailDiscuss.setOnClickListener(this);
 //        allNews = (Button) findViewById(R.id.bt_news_detail_discuss);
@@ -232,7 +247,6 @@ public class NewsDtailActivity extends AppCompatActivity implements INewsDetailV
                 }catch (Exception e){
                     Log.d(TAG, "onClick: "+e.getMessage());
                 }
-                Toast.makeText(NewsDtailActivity.this, "评论成功", Toast.LENGTH_SHORT).show();
                 commentEditText.setText("");
                 break;
             case R.id.allComments:

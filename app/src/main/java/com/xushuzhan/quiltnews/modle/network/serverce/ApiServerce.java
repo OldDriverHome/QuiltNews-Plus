@@ -1,10 +1,13 @@
 package com.xushuzhan.quiltnews.modle.network.serverce;
 
+import com.xushuzhan.quiltnews.modle.been.BedNewsDetailBeen;
 import com.xushuzhan.quiltnews.modle.been.BedNewsListBeen;
+import com.xushuzhan.quiltnews.modle.been.BedNewsSlidesBeen;
 import com.xushuzhan.quiltnews.modle.been.NewDetailBeen;
 import com.xushuzhan.quiltnews.modle.been.NewsListBeen;
 import com.xushuzhan.quiltnews.modle.been.VideoBean;
 import com.xushuzhan.quiltnews.modle.been.VideoListBean;
+import com.xushuzhan.quiltnews.modle.been.ViewPagerBeen;
 import com.xushuzhan.quiltnews.modle.been.ViewPagersBeen;
 
 
@@ -13,6 +16,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 import rx.Observable;
 
 /**
@@ -64,11 +68,20 @@ public interface ApiServerce {
      * @param apiKey
      * @return
      */
-//    @FormUrlEncoded
-//    @POST("3023/news/channel")
-//    Observable<ViewPagerBeen> getViewPagerContent(@Header("apikey") String apiKey,@Field("id") String id,@Field("page") String page);
+    @GET("txapi/world/world?num=10&page=1")
+    Observable<ViewPagerBeen> getViewPagerContent(@Header("apikey") String apiKey);
 
     @GET("txapi/keji/keji?num=6&page=1")
     Observable<ViewPagersBeen> getViewPagersContent(@Header("apikey") String apiKey);
 
+    //睡前新闻的幻灯片模式
+    @GET("ipadtestdoc")
+    Observable<BedNewsSlidesBeen> getBedNewsSlides(@Query("aid") String aid);
+
+    @GET("irecommendList.php?userId=866048024885909&count=6&gv=5.2.6&av=5.2.6&uid=866048024885909&deviceid=866048024885909&proid=ifengnews&os=android_23&df=androidphone&vt=5&screen=720x1280&publishid=2024&nw=wifi&city=重庆市&province=重庆市")
+    Observable<BedNewsListBeen> getBedNewsList();
+
+    //睡前新闻详情
+    @GET("ipadtestdoc")
+    Observable<BedNewsDetailBeen> getBedNewsDtail(@Query("aid") String aid);
 }

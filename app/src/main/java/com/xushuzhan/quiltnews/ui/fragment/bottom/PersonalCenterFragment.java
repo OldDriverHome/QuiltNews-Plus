@@ -129,20 +129,32 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
                 }
                 break;
             case R.id.rl_personal_center_my_discuss:
-                personalCenterPresenter.intentToMyDiscuss();
+                if(isLogin){
+                    personalCenterPresenter.intentToMyDiscuss();
+                }else {
+                    Toast.makeText(getContext(), "请先登录！", Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.iv_user_center_login:
             case R.id.personal_certen_login_now:
                 //personalCenterPresenter.intentToLoginActivity();
                 break;
             case R.id.rl_pc_my_collect:
+                if(isLogin){
                 startActivity(new Intent(getContext(), MyCollectionActivity.class));
+                }else {
+                    Toast.makeText(getContext(), "请先登录！", Toast.LENGTH_SHORT).show();
+                }
                 break;
 //            case R.id.rl_pc_my_down:
 //                Toast.makeText(getContext(), "抱歉-这个功能正在开发", Toast.LENGTH_SHORT).show();
 //                break;
             case R.id.rl_pc_idea:
-                personalCenterPresenter.showIdead();
+                if(isLogin){
+                    personalCenterPresenter.showIdead();
+                }else {
+                    Toast.makeText(getContext(), "请先登录！", Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.rl_pc_check_update:
                 personalCenterPresenter.checkUpdate();
@@ -159,7 +171,9 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
                             personalCenterPresenter.intentToLoginActivity();
                         }
                     });
-                    Toast.makeText(getActivity(), "退出登录成功", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "退出登录成功！", Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(getContext(), "请先登录！", Toast.LENGTH_SHORT).show();
                 }
                 break;
 

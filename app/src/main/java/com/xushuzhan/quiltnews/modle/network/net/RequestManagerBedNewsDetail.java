@@ -1,6 +1,6 @@
 package com.xushuzhan.quiltnews.modle.network.net;
-
-import com.xushuzhan.quiltnews.modle.been.BedNewsListBeen;
+import com.xushuzhan.quiltnews.modle.been.BedNewsDetailBeen;
+import com.xushuzhan.quiltnews.modle.been.BedNewsSlidesBeen;
 import com.xushuzhan.quiltnews.modle.network.config.API;
 import com.xushuzhan.quiltnews.modle.network.serverce.ApiServerce;
 
@@ -13,11 +13,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
-
 /**
  * Created by xushuzhan on 2016/9/18.
  */
-public class RequestManagerBedNewsList {
+public class RequestManagerBedNewsDetail {
     private static final int DEFAULT_TIMEOUT = 10;
 
     private Retrofit retrofit;
@@ -25,7 +24,7 @@ public class RequestManagerBedNewsList {
     private ApiServerce apiServerce;
 
     //构造方法私有
-    private RequestManagerBedNewsList() {
+    private RequestManagerBedNewsDetail() {
         //手动创建一个OkHttpClient并设置超时时间
         OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
         httpClientBuilder.connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
@@ -34,7 +33,7 @@ public class RequestManagerBedNewsList {
                 .client(httpClientBuilder.build())
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .baseUrl(API.FENG_HUANG_WANG_NEWS_LIST)
+                .baseUrl(API.SLIDES)
                 .build();
 
         apiServerce = retrofit.create(ApiServerce.class);
@@ -43,11 +42,11 @@ public class RequestManagerBedNewsList {
 
     //在访问RequestManagerNewsList时创建单例
     private static class SingletonHolder {
-        private static final RequestManagerBedNewsList INSTANCE = new RequestManagerBedNewsList();
+        private static final RequestManagerBedNewsDetail INSTANCE = new RequestManagerBedNewsDetail();
     }
 
     //获取单例
-    public static RequestManagerBedNewsList getInstance() {
+    public static RequestManagerBedNewsDetail getInstance() {
         return SingletonHolder.INSTANCE;
     }
 
@@ -57,15 +56,12 @@ public class RequestManagerBedNewsList {
      * @param subscriber 调用时传过来的观察者对象
      */
 
-    public void getNewsList(Subscriber<BedNewsListBeen> subscriber) {
+    public void getBedNewsDetail(Subscriber<BedNewsDetailBeen> subscriber, String aid) {
 
-        apiServerce.getBedNewsList()
+        apiServerce.getBedNewsDtail(aid)
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);
     }
-
-
-
 }

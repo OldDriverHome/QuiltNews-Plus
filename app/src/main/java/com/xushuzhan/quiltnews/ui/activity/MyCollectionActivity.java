@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.jude.easyrecyclerview.EasyRecyclerView;
 import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter;
 import com.xushuzhan.quiltnews.R;
+import com.xushuzhan.quiltnews.modle.network.config.NewsInfo;
 import com.xushuzhan.quiltnews.presenter.MyCollectionPresenter;
 import com.xushuzhan.quiltnews.ui.adapter.MyCollectionAdapter;
 import com.xushuzhan.quiltnews.ui.iview.IMyCollectionView;
@@ -69,6 +70,7 @@ EasyRecyclerView easyRecyclerView;
 
     @Override
     public void intentToNewsDetail(String newsTitle, String newsUrl, String picUrl, String uniqueKey) {
+        NewsInfo.FROM_MY_COLLECTION = true;
         Intent intent = new Intent(MyCollectionActivity.this,NewsDtailActivity.class);
         intent.putExtra("uniquekey", uniqueKey);
         intent.putExtra("url", newsUrl);
