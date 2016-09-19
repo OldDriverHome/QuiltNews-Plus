@@ -2,7 +2,7 @@ package com.xushuzhan.quiltnews.modle.network.net;
 
 import com.xushuzhan.quiltnews.modle.been.BedNewsListBeen;
 import com.xushuzhan.quiltnews.modle.network.config.API;
-import com.xushuzhan.quiltnews.modle.network.serverce.ApiServerce;
+import com.xushuzhan.quiltnews.modle.network.serverce.ApiServer;
 
 import java.util.concurrent.TimeUnit;
 
@@ -22,7 +22,7 @@ public class RequestManagerBedNewsList {
 
     private Retrofit retrofit;
 
-    private ApiServerce apiServerce;
+    private ApiServer apiServerce;
 
     //构造方法私有
     private RequestManagerBedNewsList() {
@@ -37,7 +37,7 @@ public class RequestManagerBedNewsList {
                 .baseUrl(API.FENG_HUANG_WANG_NEWS_LIST)
                 .build();
 
-        apiServerce = retrofit.create(ApiServerce.class);
+        apiServerce = retrofit.create(ApiServer.class);
 
     }
 

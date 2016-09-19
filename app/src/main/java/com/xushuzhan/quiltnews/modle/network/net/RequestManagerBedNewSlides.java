@@ -2,7 +2,7 @@ package com.xushuzhan.quiltnews.modle.network.net;
 
 import com.xushuzhan.quiltnews.modle.been.BedNewsSlidesBeen;
 import com.xushuzhan.quiltnews.modle.network.config.API;
-import com.xushuzhan.quiltnews.modle.network.serverce.ApiServerce;
+import com.xushuzhan.quiltnews.modle.network.serverce.ApiServer;
 
 import java.util.concurrent.TimeUnit;
 
@@ -22,7 +22,7 @@ public class RequestManagerBedNewSlides {
 
     private Retrofit retrofit;
 
-    private ApiServerce apiServerce;
+    private ApiServer apiServerce;
 
     //构造方法私有
     private RequestManagerBedNewSlides() {
@@ -37,7 +37,7 @@ public class RequestManagerBedNewSlides {
                 .baseUrl(API.SLIDES)
                 .build();
 
-        apiServerce = retrofit.create(ApiServerce.class);
+        apiServerce = retrofit.create(ApiServer.class);
 
     }
 
