@@ -34,7 +34,7 @@ public class RequestManagerViewPager {
                 .client(httpClientBuilder.build())
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .baseUrl(API.BAI_DU_BASE_URL)
+                .baseUrl(API.SHOW_API_BASE_URL)
                 .build();
 
         apiServerce = retrofit.create(ApiServer.class);
@@ -59,7 +59,7 @@ public class RequestManagerViewPager {
 
     public void getViewPager(Subscriber<ViewPagerBeen> subscriber) {
 
-        apiServerce.getViewPagerContent(API.BAIDU_API_APP_KEY)
+        apiServerce.getViewPagerContent(API.ShowApiAppId,API.ShowApiApiSign,String.valueOf(10),String.valueOf(1))
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

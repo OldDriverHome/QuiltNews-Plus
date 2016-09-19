@@ -8,7 +8,6 @@ import com.xushuzhan.quiltnews.modle.been.NewsListBeen;
 import com.xushuzhan.quiltnews.modle.been.VideoBean;
 import com.xushuzhan.quiltnews.modle.been.VideoListBean;
 import com.xushuzhan.quiltnews.modle.been.ViewPagerBeen;
-import com.xushuzhan.quiltnews.modle.been.ViewPagersBeen;
 
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -65,14 +64,13 @@ public interface ApiServer {
 
     /**
      * 首页的ViewPager
-     * @param apiKey
      * @return
      */
-    @GET("txapi/world/world?num=10&page=1")
-    Observable<ViewPagerBeen> getViewPagerContent(@Header("apikey") String apiKey);
 
-    @GET("txapi/keji/keji?num=6&page=1")
-    Observable<ViewPagersBeen> getViewPagersContent(@Header("apikey") String apiKey);
+    @FormUrlEncoded
+    @POST("196-1")
+    Observable<ViewPagerBeen> getViewPagerContent(@Field("showapi_appid") String appId,@Field("showapi_sign") String sign,@Field("num")String num,@Field("page")String page);
+
 
     //睡前新闻的幻灯片模式
     @GET("ipadtestdoc")

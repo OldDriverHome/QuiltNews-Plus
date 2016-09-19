@@ -13,7 +13,6 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.jude.rollviewpager.adapter.StaticPagerAdapter;
 import com.xushuzhan.quiltnews.R;
 import com.xushuzhan.quiltnews.modle.been.ViewPagerBeen;
-import com.xushuzhan.quiltnews.modle.been.ViewPagersBeen;
 import com.xushuzhan.quiltnews.modle.network.config.API;
 import com.xushuzhan.quiltnews.modle.network.config.NewsInfo;
 import com.xushuzhan.quiltnews.modle.network.net.RequestManagerBedNewsList;
@@ -29,7 +28,6 @@ import rx.Subscriber;
  */
 public class ViewPagerAdapter extends StaticPagerAdapter {
     public static ViewPagerBeen viewPagersContent;
-    public static ArrayList<ViewPagersBeen.NewslistBean> mviewPagerContent;
     public static final String TAG = "ViewPagerAdapter";
     private Context ctx;
     public ViewPagerAdapter(Context ctx) {
@@ -48,7 +46,7 @@ public class ViewPagerAdapter extends StaticPagerAdapter {
 
             @Override
             public void onError(Throwable e) {
-                Log.d(TAG, "onError: " + e);
+                Log.d(TAG, "onError: " + e.getMessage());
             }
 
             @Override
@@ -61,20 +59,18 @@ public class ViewPagerAdapter extends StaticPagerAdapter {
 //                    }
 //                }
                 if(NewsInfo.isShowPic) {
-                    view.setText(viewPagerBeen.getNewslist().get(position).getTitle());
+                    view.setText(viewPagerBeen.getShowapi_res_body().getNewslist().get(position).getTitle());
                     Glide.with(ctx)
-                            .load(viewPagerBeen.getNewslist().get(position).getPicUrl())
+                            .load(viewPagerBeen.getShowapi_res_body().getNewslist().get(position).getPicUrl())
                             .error(R.drawable.no_picture)
                             .into(view);
-                    Log.d(TAG, "onNext: "+viewPagerBeen.getNewslist().get(position).getPicUrl());
-
-                    Glide.with(ctx).load(viewPagerBeen.getNewslist().get(position).getUrl())
-                            .asBitmap().into(new SimpleTarget<Bitmap>() {
-                        @Override
-                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                            view.setBitmap(resource);
-                        }
-                    });
+//                    Glide.with(ctx).load(viewPagerBeen.getShowapi_res_body().getNewslist().get(position).getUrl())
+//                            .asBitmap().into(new SimpleTarget<Bitmap>() {
+//                        @Override
+//                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+//                            view.setBitmap(resource);
+//                        }
+//                    });
                 }else {
                     view.setImageResource(R.drawable.loading_s);
                 }

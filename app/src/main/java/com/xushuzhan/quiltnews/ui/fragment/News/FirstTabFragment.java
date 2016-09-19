@@ -75,24 +75,21 @@ public class FirstTabFragment extends Fragment implements SwipeRefreshLayout.OnR
                         try {
                             NewsInfo.FROM_VIEW_PAGE = true;
                             Intent intent = new Intent(getContext(), NewsDtailActivity.class);
-                            intent.putExtra("url", ViewPagerAdapter.viewPagersContent.getNewslist()
-                                    .get(position).getUrl());
-                            intent.putExtra("title", ViewPagerAdapter.viewPagersContent.getNewslist()
-                                    .get(position).getTitle());
-                            intent.putExtra("pic_url", ViewPagerAdapter.viewPagersContent.getNewslist()
-                                    .get(position).getPicUrl());
+                            intent.putExtra("url", ViewPagerAdapter.viewPagersContent.getShowapi_res_body().getNewslist().get(position).getUrl());
+                            intent.putExtra("title", ViewPagerAdapter.viewPagersContent.getShowapi_res_body().getNewslist().get(position).getTitle());
+                            intent.putExtra("pic_url", ViewPagerAdapter.viewPagersContent.getShowapi_res_body().getNewslist().get(position).getPicUrl());
                             intent.putExtra("uniquekey", ViewPagerAdapter.viewPagersContent
-                                    .getNewslist().get(position).getCtime());
+                                    .getShowapi_res_body().getNewslist().get(position).getCtime());
                             startActivity(intent);
 
-                            Log.d(TAG, "onItemClick: "+ViewPagerAdapter.viewPagersContent.getNewslist()
-                                    .get(position).getUrl());
-                            Log.d(TAG, "onItemClick: "+ViewPagerAdapter.viewPagersContent.getNewslist()
-                                    .get(position).getPicUrl());
-                            Log.d(TAG, "onItemClick: "+ViewPagerAdapter.viewPagersContent
-                                    .getNewslist().get(position).getCtime());
-                            Log.d(TAG, "onItemClick: "+ViewPagerAdapter.viewPagersContent.getNewslist()
-                                    .get(position).getTitle());
+//                            Log.d(TAG, "onItemClick: "+ViewPagerAdapter.viewPagersContent.getNewslist()
+//                                    .get(position).getUrl());
+//                            Log.d(TAG, "onItemClick: "+ViewPagerAdapter.viewPagersContent.getNewslist()
+//                                    .get(position).getPicUrl());
+//                            Log.d(TAG, "onItemClick: "+ViewPagerAdapter.viewPagersContent
+//                                    .getNewslist().get(position).getCtime());
+//                            Log.d(TAG, "onItemClick: "+ViewPagerAdapter.viewPagersContent.getNewslist()
+//                                    .get(position).getTitle());
                         } catch (Exception e) {
                             Log.d(TAG, "onItemClick: " + e.getMessage());
                         }

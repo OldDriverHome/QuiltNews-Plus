@@ -92,11 +92,12 @@ public class NewsDtailActivity extends AppCompatActivity implements INewsDetailV
         }
 
         if (NewsInfo.FROM_VIEW_PAGE) {
-            settings.setJavaScriptEnabled(false);
+            settings.setJavaScriptEnabled(true);
             webView.setWebViewClient(new WebViewClient() {
                 @Override
                 public boolean shouldOverrideUrlLoading(WebView view, String
                         url) {
+                    view.loadUrl(url); // 根据传入的参数再去加载新的网页
                     return false; // 不允许打开新的网页
                 }
             });
@@ -108,6 +109,7 @@ public class NewsDtailActivity extends AppCompatActivity implements INewsDetailV
                 @Override
                 public boolean shouldOverrideUrlLoading(WebView view, String
                         url) {
+                    view.loadUrl(url); // 根据传入的参数再去加载新的网页
                     return false; // 不允许打开新的网页
                 }
             });

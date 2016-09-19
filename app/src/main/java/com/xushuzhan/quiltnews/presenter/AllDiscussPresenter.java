@@ -11,11 +11,13 @@ import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.FindCallback;
+import com.xushuzhan.quiltnews.APP;
 import com.xushuzhan.quiltnews.modle.been.NewsDiscussBeen;
 import com.xushuzhan.quiltnews.modle.network.config.UserInfo;
 import com.xushuzhan.quiltnews.ui.adapter.NewsDiscussAdapter;
 import com.xushuzhan.quiltnews.ui.iview.IAllDiscussView;
 import com.xushuzhan.quiltnews.utils.DialogPopup;
+import com.xushuzhan.quiltnews.utils.SharedPreferenceUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -98,8 +100,8 @@ public class AllDiscussPresenter {
                     Log.d(TAG, "onSendClick: " + content);
                     if (content != null) {
                         AVObject news = new AVObject("comment");// 构建对象
-                        news.put("user_name", UserInfo.userName);
-                        news.put("nick_name",UserInfo.nickName);
+                        news.put("user_name", AVUser.getCurrentUser().getUsername());
+                        news.put("nick_name", SharedPreferenceUtils.getString(APP.getAppContext(),"nick_name"));
                         news.put("news_uniquekey", uniqueKey);
                         news.put("discuss_content", content);
                         news.put("news_title", title);
