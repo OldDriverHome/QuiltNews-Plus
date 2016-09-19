@@ -27,7 +27,6 @@ import com.bumptech.glide.Glide;
 import com.xushuzhan.quiltnews.APP;
 import com.xushuzhan.quiltnews.R;
 import com.xushuzhan.quiltnews.modle.network.config.NewsInfo;
-import com.xushuzhan.quiltnews.modle.network.config.UserInfo;
 import com.xushuzhan.quiltnews.presenter.PersonalCenterPresenter;
 import com.xushuzhan.quiltnews.ui.activity.LoginActivity;
 import com.xushuzhan.quiltnews.ui.activity.MyCollectionActivity;
@@ -79,6 +78,11 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
         setupNewHeadPicture();
         loadHeadPicture();
         checkInfo();
+        if (AVUser.getCurrentUser() != null) {
+            nickName.setText("设置昵称");
+        } else {
+            nickName.setText("点击登陆");
+        }
         return view;
     }
 
@@ -338,7 +342,6 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
         if (SharedPreferenceUtils.getString(APP.getAppContext(), "nick_name")!=null&&!SharedPreferenceUtils.getString(APP.getAppContext(), "nick_name").equals("匿名用户")) {
             nickName.setText(SharedPreferenceUtils.getString(APP.getAppContext(), "nick_name"));
         } else {
-            //  String objectId = SharedPreferenceUtils.getString(APP.getAppContext(), "object_id");
             if (AVUser.getCurrentUser() != null) {
                 Log.d(TAG, "checkInfo: objectid=" + AVUser.getCurrentUser().getObjectId());
                 AVQuery<AVObject> avQuery = new AVQuery<>("_User");
@@ -346,13 +349,14 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
                     @Override
                     public void done(AVObject avObject, AVException e) {
                         Log.d(TAG, "done: "+avObject);
+                        if (avObject.get("nick_name") != null) {
                             if (!avObject.get("nick_name").toString().equals("")) {
                                 nickName.setText(avObject.get("nick_name").toString());
                                 SharedPreferenceUtils.putString(APP.getAppContext(), "nick_name", avObject.get("nick_name").toString());
                             } else {
                                 nickName.setText("输入昵称");
                             }
-
+                        }
                     }
                 });
             }
@@ -369,17 +373,6 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
             }
         });
 
-
-//        if (isLogin) {
-//            if(nickName.getText().toString().equals("匿名用户")) {
-//                editNickName.setVisibility(View.VISIBLE);
-//                editNickName.setOnClickListener(this);
-//            }else {
-//                editNickName.setVisibility(View.INVISIBLE);
-//            }
-//        } else{
-//            editNickName.setVisibility(View.VISIBLE);
-//        }
         if (!NewsInfo.isChecked) {
             ViewModeTV.setText(getResources().getText(R.string.font_mode));
             ViewModeIV.setImageResource(R.drawable.font_mode);

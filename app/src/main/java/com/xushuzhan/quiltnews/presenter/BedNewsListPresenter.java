@@ -76,7 +76,6 @@ public class BedNewsListPresenter {
 
     }
 
-
     public void initTimer() {
         try {
             final TimerUtils timer = new TimerUtils();//实例化

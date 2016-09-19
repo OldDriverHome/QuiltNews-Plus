@@ -1,25 +1,18 @@
 package com.xushuzhan.quiltnews.ui.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.jude.rollviewpager.adapter.StaticPagerAdapter;
 import com.xushuzhan.quiltnews.R;
 import com.xushuzhan.quiltnews.modle.been.ViewPagerBeen;
-import com.xushuzhan.quiltnews.modle.network.config.API;
 import com.xushuzhan.quiltnews.modle.network.config.NewsInfo;
-import com.xushuzhan.quiltnews.modle.network.net.RequestManagerBedNewsList;
 import com.xushuzhan.quiltnews.modle.network.net.RequestManagerViewPager;
 import com.xushuzhan.quiltnews.ui.view.BannerImageView;
-
-import java.util.ArrayList;
 
 import rx.Subscriber;
 

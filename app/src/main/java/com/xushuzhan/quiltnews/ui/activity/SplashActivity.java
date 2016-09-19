@@ -42,7 +42,6 @@ public class SplashActivity extends Activity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_splash);
-
         ImageView imageView = (ImageView) findViewById(R.id.iv_icon_splash_activity);
         Glide.with(this).load(R.drawable.icon).into(imageView);
 
@@ -78,7 +77,6 @@ public class SplashActivity extends Activity {
         } catch (Exception ee) {
             Log.d(TAG, "onCreate: " + ee.getMessage());
         }
-        handler.sendEmptyMessageDelayed(START_ACTIVITY, 800);
     }
 
     private Handler handler = new Handler() {

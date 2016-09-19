@@ -3,6 +3,7 @@ package com.xushuzhan.quiltnews.utils;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
+
 /**
  * Created by xushuzhan on 2016/8/20.
  * 计时器工具类
@@ -49,8 +50,7 @@ public class TimerUtils {
     }
 
     public void cancel() {
-        if(mHandler !=null)
-        {
+        if (mHandler != null) {
             mHandler.removeMessages(TIME);
             mHandler = null;
         }
@@ -58,8 +58,7 @@ public class TimerUtils {
     }
 
     public void pause() {
-        if(mHandler !=null)
-        {
+        if (mHandler != null) {
             mHandler.removeMessages(TIME);
             isPause = true;
             curReminTime = remainTime;
@@ -122,8 +121,9 @@ public class TimerUtils {
     }
 
     public interface TimeListener {
-        public void onFinish();
-        public void onInterval(long remainTime);
+        void onFinish();
+
+        void onInterval(long remainTime);
     }
 
     public void setTimerLiener(TimeListener listener) {
