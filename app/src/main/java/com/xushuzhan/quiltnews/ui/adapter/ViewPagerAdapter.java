@@ -67,6 +67,7 @@ public class ViewPagerAdapter extends StaticPagerAdapter {
                             .error(R.drawable.no_picture)
                             .into(view);
                     Log.d(TAG, "onNext: "+viewPagerBeen.getNewslist().get(position).getPicUrl());
+
                     Glide.with(ctx).load(viewPagerBeen.getNewslist().get(position).getUrl())
                             .asBitmap().into(new SimpleTarget<Bitmap>() {
                         @Override

@@ -92,9 +92,11 @@ public class SplashActivity extends Activity {
                     if (isFirst) {
                         Intent intent = new Intent(SplashActivity.this, GuideActivity.class);
                         startActivity(intent);
+                        finish();
                     } else {
                         Intent intent = new Intent(SplashActivity.this, MainActivity.class);
                         startActivity(intent);
+                        finish();
                     }
                     finish();
                     break;

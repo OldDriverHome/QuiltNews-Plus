@@ -60,7 +60,7 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
     RelativeLayout idea;
     RelativeLayout update;
     RelativeLayout signOut;
-//    ImageView editNickName;
+    //    ImageView editNickName;
     TextView nickName;
     TextView ViewModeTV;
 
@@ -131,9 +131,9 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
                 }
                 break;
             case R.id.rl_personal_center_my_discuss:
-                if(isLogin){
+                if (isLogin) {
                     personalCenterPresenter.intentToMyDiscuss();
-                }else {
+                } else {
                     Toast.makeText(getContext(), "请先登录！", Toast.LENGTH_SHORT).show();
                 }
                 break;
@@ -142,9 +142,9 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
                 //personalCenterPresenter.intentToLoginActivity();
                 break;
             case R.id.rl_pc_my_collect:
-                if(isLogin){
-                startActivity(new Intent(getContext(), MyCollectionActivity.class));
-                }else {
+                if (isLogin) {
+                    startActivity(new Intent(getContext(), MyCollectionActivity.class));
+                } else {
                     Toast.makeText(getContext(), "请先登录！", Toast.LENGTH_SHORT).show();
                 }
                 break;
@@ -152,9 +152,9 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
 //                Toast.makeText(getContext(), "抱歉-这个功能正在开发", Toast.LENGTH_SHORT).show();
 //                break;
             case R.id.rl_pc_idea:
-                if(isLogin){
+                if (isLogin) {
                     personalCenterPresenter.showIdead();
-                }else {
+                } else {
                     Toast.makeText(getContext(), "请先登录！", Toast.LENGTH_SHORT).show();
                 }
                 break;
@@ -174,7 +174,7 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
                         }
                     });
                     Toast.makeText(getActivity(), "退出登录成功！", Toast.LENGTH_SHORT).show();
-                }else {
+                } else {
                     Toast.makeText(getContext(), "请先登录！", Toast.LENGTH_SHORT).show();
                 }
                 break;
@@ -187,15 +187,16 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
     @Override
     public void intentToLogin() {
         Intent intent = new Intent(getContext(), LoginActivity.class);
-        startActivityForResult(intent,1);
+        startActivityForResult(intent, 1);
 
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (resultCode){
-            case RESULT_OK :
+        switch (resultCode) {
+            case RESULT_OK:
+                isLogin = true;
                 setupNewHeadPicture();
                 loadHeadPicture();
                 checkInfo();
@@ -334,22 +335,23 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
     }
 
     private void checkInfo() {
-        if(SharedPreferenceUtils.getString(APP.getAppContext(), "nick_name")!=null&&!SharedPreferenceUtils.getString(APP.getAppContext(), "nick_name").equals("匿名用户")){
+        if (SharedPreferenceUtils.getString(APP.getAppContext(), "nick_name")!=null&&!SharedPreferenceUtils.getString(APP.getAppContext(), "nick_name").equals("匿名用户")) {
             nickName.setText(SharedPreferenceUtils.getString(APP.getAppContext(), "nick_name"));
-        }else {
-          //  String objectId = SharedPreferenceUtils.getString(APP.getAppContext(), "object_id");
-            if (AVUser.getCurrentUser()!=null) {
-                Log.d(TAG, "checkInfo: objectid="+AVUser.getCurrentUser().getObjectId());
+        } else {
+            //  String objectId = SharedPreferenceUtils.getString(APP.getAppContext(), "object_id");
+            if (AVUser.getCurrentUser() != null) {
+                Log.d(TAG, "checkInfo: objectid=" + AVUser.getCurrentUser().getObjectId());
                 AVQuery<AVObject> avQuery = new AVQuery<>("_User");
                 avQuery.getInBackground(AVUser.getCurrentUser().getObjectId(), new GetCallback<AVObject>() {
                     @Override
                     public void done(AVObject avObject, AVException e) {
-                        if (avObject.get("nick_name")!=null) {
-                            nickName.setText(avObject.get("nick_name").toString());
-                            SharedPreferenceUtils.putString(APP.getAppContext(),"nick_name",avObject.get("nick_name").toString());
-                        } else {
-                            nickName.setText("输入昵称");
-                        }
+                        Log.d(TAG, "done: "+avObject);
+                            if (!avObject.get("nick_name").toString().equals("")) {
+                                nickName.setText(avObject.get("nick_name").toString());
+                                SharedPreferenceUtils.putString(APP.getAppContext(), "nick_name", avObject.get("nick_name").toString());
+                            } else {
+                                nickName.setText("输入昵称");
+                            }
 
                     }
                 });
