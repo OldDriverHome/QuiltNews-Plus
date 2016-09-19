@@ -2,6 +2,8 @@ package com.xushuzhan.quiltnews.presenter;
 
 import android.util.Log;
 
+import com.jude.utils.JUtils;
+import com.xushuzhan.quiltnews.cache.Cache;
 import com.xushuzhan.quiltnews.modle.been.NewsListBeen;
 import com.xushuzhan.quiltnews.modle.network.net.RequestManagerNewsList;
 import com.xushuzhan.quiltnews.ui.iview.IFirstTabView;
@@ -20,6 +22,9 @@ public class FirstTabFragmentPresenter {
     }
 
     public void showNewsList(){
+        final Cache cache = new Cache();
+        if (JUtils.isNetWorkAvilable()) {
+            Log.d(TAG, "showNewsList: 有网");
             Subscriber<NewsListBeen> subscriber = new Subscriber<NewsListBeen>() {
 
                 @Override
@@ -30,18 +35,23 @@ public class FirstTabFragmentPresenter {
                 @Override
                 public void onError(Throwable e) {
                     iFirstTabView.showToast("网络不太流畅哟");
-                    Log.d(TAG, "onError: "+e.getMessage());
                 }
 
                 @Override
                 public void onNext(NewsListBeen newsListBeen) {
                     //请求完成;
+                    cache.saveCache(newsListBeen);
                     iFirstTabView.addDataToRecyclerView(newsListBeen);
-                    ListBeen= newsListBeen;
-
+                    ListBeen = newsListBeen;
                 }
             };
-            RequestManagerNewsList.getInstance().getNewsList(subscriber,"top");
+            RequestManagerNewsList.getInstance().getNewsList(subscriber, "top");
+        } else {
+            Log.d(TAG, "showNewsList: 无网");
+            NewsListBeen newsListBeen = (NewsListBeen) cache.getCache("NewsListBeen");
+            iFirstTabView.addDataToRecyclerView(newsListBeen);
+            ListBeen = newsListBeen;
+        }
     }
 
     public void showNewsDetail(int position){

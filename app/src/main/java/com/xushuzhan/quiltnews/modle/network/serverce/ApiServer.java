@@ -7,7 +7,6 @@ import com.xushuzhan.quiltnews.modle.been.VideoBean;
 import com.xushuzhan.quiltnews.modle.been.VideoListBean;
 import com.xushuzhan.quiltnews.modle.been.ViewPagersBeen;
 
-
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -25,9 +24,10 @@ public interface ApiServer {
      * @param appKey
      * @return
      */
+   // @Headers("EasyCache-Control: public, max-age=3600")
     @FormUrlEncoded
     @POST("index")
-    Observable<NewsListBeen> getNewsList(@Field("type") String type,@Field("key") String appKey);
+    Observable<NewsListBeen> getNewsList(@Field("type") String type, @Field("key") String appKey);
 
     /**
      * 抽取新闻页面的图片和内容

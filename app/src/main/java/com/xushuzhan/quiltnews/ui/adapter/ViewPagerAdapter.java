@@ -54,6 +54,7 @@ public class ViewPagerAdapter extends StaticPagerAdapter {
                 viewPagersContent = viewPagersBeen;
                 if(NewsInfo.isShowPic) {
                     view.setText(viewPagersBeen.getNewslist().get(position).getTitle());
+                    Log.d(TAG, "onNext: "+viewPagersBeen.getNewslist().get(position).getPicUrl());
                     Glide.with(ctx)
                             .load(viewPagersBeen.getNewslist().get(position).getPicUrl())
                             .error(R.drawable.no_picture)

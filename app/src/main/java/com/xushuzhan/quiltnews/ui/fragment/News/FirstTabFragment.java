@@ -120,7 +120,6 @@ public class FirstTabFragment extends Fragment implements SwipeRefreshLayout.OnR
             public void run() {
                 Toast.makeText(getContext(), "努力刷新中...", Toast.LENGTH_SHORT).show();
                 firstTabFragmentPresenter.showNewsList();
-
                 recyclerView.setRefreshing(false);
             }
         }, 1000);

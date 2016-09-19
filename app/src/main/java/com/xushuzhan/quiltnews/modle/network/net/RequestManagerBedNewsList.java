@@ -39,7 +39,6 @@ public class RequestManagerBedNewsList {
                 .build();
 
         mApiServer = retrofit.create(ApiServer.class);
-
     }
 
     //在访问RequestManagerNewsList时创建单例
