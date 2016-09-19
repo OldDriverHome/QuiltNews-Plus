@@ -34,6 +34,7 @@ public class LoginPresenter {
         final String account= iloginView.getAccount();
         final String password=  iloginView.getPassword();
         if(!TextUtil.isEmail(account)){
+            iloginView.showToast("请输入正确的邮箱");
             iloginView.setError(iloginView.getEditAccount(),"请输入正确的邮箱");
         } else if (password.length() < 7) {
             iloginView.setError(iloginView.getEditPassword(),"密码不能小于7位");

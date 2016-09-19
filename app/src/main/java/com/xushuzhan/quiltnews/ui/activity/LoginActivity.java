@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.tencent.tauth.Tencent;
 import com.xushuzhan.quiltnews.R;
 import com.xushuzhan.quiltnews.presenter.LoginPresenter;
+import com.xushuzhan.quiltnews.ui.fragment.bottom.PersonalCenterFragment;
 import com.xushuzhan.quiltnews.ui.iview.IloginView;
 import com.xushuzhan.quiltnews.ui.view.LikeButtonView;
 
@@ -81,7 +82,10 @@ public class LoginActivity extends AppCompatActivity implements IloginView, View
 
     @Override
     public void toMainActivity() {
-        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+        //Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        setResult(PersonalCenterFragment.RESULT_OK);
+        finish();
+
     }
 
     @Override
@@ -106,10 +110,9 @@ public class LoginActivity extends AppCompatActivity implements IloginView, View
 
     @Override
     public void toSignUpActivity() {
-        finish();
-        startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
+        Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
+        startActivityForResult(intent,1);
     }
-
     @Override
     public Activity getActivity() {
         return LoginActivity.this;
@@ -144,8 +147,15 @@ public class LoginActivity extends AppCompatActivity implements IloginView, View
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Tencent.onActivityResultData(requestCode, resultCode, data, loginPresenter.getIUilistener());
-        finish();
-        loginPresenter.intentToMainActivity(LoginActivity.this);
+
+        switch (resultCode){
+            case PersonalCenterFragment.RESULT_OK:
+                setResult(PersonalCenterFragment.RESULT_OK);
+                finish();
+                break;
+            case PersonalCenterFragment.RESULT_NO:
+                break;
+        }
     }
 
 }

@@ -7,6 +7,7 @@ import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.FindCallback;
+import com.xushuzhan.quiltnews.APP;
 import com.xushuzhan.quiltnews.modle.been.MyCollectionBeen;
 import com.xushuzhan.quiltnews.modle.been.MyDiscussBeen;
 import com.xushuzhan.quiltnews.modle.network.config.UserInfo;
@@ -14,6 +15,7 @@ import com.xushuzhan.quiltnews.ui.adapter.MyCollectionAdapter;
 import com.xushuzhan.quiltnews.ui.adapter.MyDiscussAdapter;
 import com.xushuzhan.quiltnews.ui.iview.IMyCollectionView;
 import com.xushuzhan.quiltnews.ui.iview.IMyDiscussView;
+import com.xushuzhan.quiltnews.utils.SharedPreferenceUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,8 +41,7 @@ public class MyCollectionPresenter {
             //查询用户评论的所有新闻
             AVQuery<AVObject> query = new AVQuery<>("collection");
             query.orderByDescending("createdAt");
-            query.whereEqualTo("user_name", UserInfo.userName);
-            Log.d(TAG, "showNewsDiscussList: "+UserInfo.userName);
+            query.whereEqualTo("user_name",AVUser.getCurrentUser().getUsername());
             query.setCachePolicy(AVQuery.CachePolicy.NETWORK_ELSE_CACHE);
             query.setMaxCacheAge(24 * 3600); //设置缓存有效期
             query.findInBackground(new FindCallback<AVObject>() {
@@ -52,7 +53,7 @@ public class MyCollectionPresenter {
                         }
                         for (int i = 0; i < list.size(); i++) {
                             MyCollectionBeen myCollectionBeen = new MyCollectionBeen();
-                            myCollectionBeen.setNickName(UserInfo.nickName);
+                            myCollectionBeen.setNickName(SharedPreferenceUtils.getString(APP.getAppContext(),"nick_name"));
                             myCollectionBeen.setCollectionTime(list.get(i).get("createdAt").toString());
                             myCollectionBeen.setNewsTitle(list.get(i).get("news_title").toString());
                             myCollectionBeen.setPicUrl(list.get(i).get("pic_url").toString());

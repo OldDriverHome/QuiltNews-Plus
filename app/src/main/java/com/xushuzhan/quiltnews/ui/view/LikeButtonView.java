@@ -138,6 +138,7 @@ public class LikeButtonView extends FrameLayout implements View.OnClickListener 
 
 
         }
+
         listener.onLikeButtonClick(isChecked);
     }
 

@@ -7,9 +7,11 @@
     tools:context="com.xushuzhan.quiltnews.ui.activity.SlidesActicity.SlidesActivity">
     <ImageView
         android:id="@+id/iv_back"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_margin="10dp"
+        android:layout_width="19dp"
+        android:layout_height="18dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="40dp"
+        android:layout_marginLeft="10dp"
         android:background="@drawable/back" />
     <android.support.v4.view.ViewPager
         android:layout_below="@id/iv_back"

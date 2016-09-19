@@ -7,10 +7,12 @@ import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.FindCallback;
+import com.xushuzhan.quiltnews.APP;
 import com.xushuzhan.quiltnews.modle.been.MyDiscussBeen;
 import com.xushuzhan.quiltnews.modle.network.config.UserInfo;
 import com.xushuzhan.quiltnews.ui.adapter.MyDiscussAdapter;
 import com.xushuzhan.quiltnews.ui.iview.IMyDiscussView;
+import com.xushuzhan.quiltnews.utils.SharedPreferenceUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +39,7 @@ public class MyDiscussPresenter {
             //查询用户评论的所有新闻
             AVQuery<AVObject> query = new AVQuery<>("comment");
             query.orderByDescending("createdAt");
-            query.whereEqualTo("user_name", UserInfo.userName);   //查询小明在某条新闻的评论
+            query.whereEqualTo("user_name", AVUser.getCurrentUser().getUsername());   //查询小明在某条新闻的评论
             query.setCachePolicy(AVQuery.CachePolicy.NETWORK_ELSE_CACHE);
             query.setMaxCacheAge(24 * 3600); //设置缓存有效期
             Log.d(TAG, "showNewsDiscussList: "+UserInfo.userName);
@@ -51,7 +53,7 @@ public class MyDiscussPresenter {
                         for (int i = 0; i < list.size(); i++) {
 
                             MyDiscussBeen myDiscussBeen = new MyDiscussBeen();
-                            myDiscussBeen.setUserName(UserInfo.nickName);
+                            myDiscussBeen.setUserName(SharedPreferenceUtils.getString(APP.getAppContext(),"nick_name"));
                             myDiscussBeen.setDiscussTime(list.get(i).get("createdAt").toString());
                             myDiscussBeen.setContent(list.get(i).get("discuss_content").toString());
                             myDiscussBeen.setNewsTitle(list.get(i).get("news_title").toString());

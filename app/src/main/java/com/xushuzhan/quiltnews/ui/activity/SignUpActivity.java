@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.tencent.tauth.Tencent;
 import com.xushuzhan.quiltnews.R;
 import com.xushuzhan.quiltnews.presenter.SignUpPresenter;
+import com.xushuzhan.quiltnews.ui.fragment.bottom.PersonalCenterFragment;
 import com.xushuzhan.quiltnews.ui.iview.ISignUpView;
 import com.xushuzhan.quiltnews.ui.view.LikeButtonView;
 
@@ -53,9 +54,7 @@ public class SignUpActivity extends AppCompatActivity implements ISignUpView, Vi
         Title.setText(getResources().getText(R.string.sign_up));
 
         account = (EditText) findViewById(R.id.sign_up_account);
-
         password = (EditText) findViewById(R.id.sign_up_password);
-
         signUp = (RelativeLayout) findViewById(R.id.sign_up_now);
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,8 +89,9 @@ public class SignUpActivity extends AppCompatActivity implements ISignUpView, Vi
 
     @Override
     public void moveToMainActivity() {
+        setResult(PersonalCenterFragment.RESULT_OK);
         finish();
-        startActivity(new Intent(SignUpActivity.this, MainActivity.class));
+        //startActivity(new Intent(SignUpActivity.this, MainActivity.class));
     }
 
     @Override
@@ -150,8 +150,8 @@ public class SignUpActivity extends AppCompatActivity implements ISignUpView, Vi
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Tencent.onActivityResultData(requestCode, resultCode, data,signUpPresenter.getIUilistener());
+        setResult(PersonalCenterFragment.RESULT_OK);
         finish();
-        signUpPresenter.intentToMainActivity(SignUpActivity.this);
 
     }
 }

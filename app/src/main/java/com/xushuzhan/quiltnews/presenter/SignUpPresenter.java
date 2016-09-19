@@ -22,6 +22,7 @@ import com.xushuzhan.quiltnews.utils.TextUtil;
  * Created by xushuzhan on 2016/8/12.
  */
 public class SignUpPresenter {
+    public static final String TAG = "SignUpPresenterTAG";
     ISignUpView iSignUpView;
     UserModle userModle;
     public SignUpPresenter(ISignUpView iSignUpView) {
@@ -39,6 +40,7 @@ public class SignUpPresenter {
         final String account = iSignUpView.getAccount();
         final String password = iSignUpView.getPassword();
         if (!TextUtil.isEmail(account)) {
+            iSignUpView.showToast("请输入正确的邮箱");
             iSignUpView.setError(iSignUpView.getEditTextAccount(), "请输入正确的邮箱");
         } else if (password == null || password.length() < 7) {
             iSignUpView.showError(iSignUpView.getEditTextPassword(), "密码不能小于了7位！");
@@ -83,5 +85,18 @@ public class SignUpPresenter {
 
     public void intentToMainActivity(Context context){
         context.startActivity(new Intent(context,MainActivity.class));
+    }
+
+    public void checkSignUpInfo(){
+        final String account = iSignUpView.getAccount();
+        final String password = iSignUpView.getPassword();
+        if (!TextUtil.isEmail(account)) {
+            iSignUpView.setError(iSignUpView.getEditTextAccount(), "请输入正确的邮箱");
+            iSignUpView.showToast("请输入正确的邮箱");
+            Log.d(TAG, "checkSignUpInfo: 判定成功");
+        } else if (password == null || password.length() < 7) {
+            iSignUpView.showToast("密码不能小于了7位");
+            iSignUpView.showError(iSignUpView.getEditTextPassword(), "密码不能小于了7位！");
+        }
     }
 }

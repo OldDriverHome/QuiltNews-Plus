@@ -19,6 +19,7 @@ import com.xushuzhan.quiltnews.presenter.AllDiscussPresenter;
 import com.xushuzhan.quiltnews.ui.adapter.NewsAdapter;
 import com.xushuzhan.quiltnews.ui.adapter.NewsDiscussAdapter;
 import com.xushuzhan.quiltnews.ui.iview.IAllDiscussView;
+import com.xushuzhan.quiltnews.ui.view.LikeButtonView;
 
 import java.util.ArrayList;
 
@@ -36,6 +37,7 @@ public class AllDiscussActivity extends AppCompatActivity implements IAllDiscuss
     AllDiscussPresenter allDiscussPresenter;
     RelativeLayout sendDiscuss;
 
+    LikeButtonView likeButtonView;
     ImageView firstDiscussPic;
     TextView firstDiscuss;
 
@@ -54,7 +56,8 @@ public class AllDiscussActivity extends AppCompatActivity implements IAllDiscuss
         allDiscussPresenter = new AllDiscussPresenter(this, newsDiscussAdapter, AllDiscussActivity.this);
         allDiscussPresenter.showAllDiscuss();
 
-
+        likeButtonView = (LikeButtonView) findViewById(R.id.like_button);
+        likeButtonView.setVisibility(View.INVISIBLE);
     }
 
     private void initView() {

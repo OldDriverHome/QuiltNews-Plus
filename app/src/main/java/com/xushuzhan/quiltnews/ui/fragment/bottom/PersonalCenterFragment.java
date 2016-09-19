@@ -47,6 +47,8 @@ import cn.finalteam.rxgalleryfinal.rxbus.event.ImageRadioResultEvent;
  */
 public class PersonalCenterFragment extends Fragment implements View.OnClickListener, IpersonalCenterView {
     public static final String TAG = "PersonalCenterTAG";
+    public static final int RESULT_OK = 1;
+    public static final int RESULT_NO = 0;
     View view;
     ImageView userLogin;
     ImageView ViewModeIV;
@@ -184,7 +186,24 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
 
     @Override
     public void intentToLogin() {
-        startActivity(new Intent(getContext(), LoginActivity.class));
+        Intent intent = new Intent(getContext(), LoginActivity.class);
+        startActivityForResult(intent,1);
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (resultCode){
+            case RESULT_OK :
+                setupNewHeadPicture();
+                loadHeadPicture();
+                checkInfo();
+                break;
+            case RESULT_NO:
+                break;
+
+        }
     }
 
     @Override

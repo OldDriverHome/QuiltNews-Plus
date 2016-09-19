@@ -32,7 +32,6 @@ public class ViewPagerAdapter extends StaticPagerAdapter {
     public static ArrayList<ViewPagersBeen.NewslistBean> mviewPagerContent;
     public static final String TAG = "ViewPagerAdapter";
     private Context ctx;
-
     public ViewPagerAdapter(Context ctx) {
         this.ctx = ctx;
     }
@@ -49,12 +48,18 @@ public class ViewPagerAdapter extends StaticPagerAdapter {
 
             @Override
             public void onError(Throwable e) {
-                Log.d(TAG, "onError: " + e.getMessage());
+                Log.d(TAG, "onError: " + e);
             }
 
             @Override
             public void onNext(ViewPagerBeen viewPagerBeen) {
                 viewPagersContent = viewPagerBeen;
+//                for(int i = 0;i<viewPagersContent.getNewslist().size();i++){
+//                    if(viewPagersContent.getNewslist().get(i).getPicUrl().equals("")){
+//                        Log.d(TAG, "onNext: 没有图片哟");
+//
+//                    }
+//                }
                 if(NewsInfo.isShowPic) {
                     view.setText(viewPagerBeen.getNewslist().get(position).getTitle());
                     Glide.with(ctx)
@@ -86,6 +91,5 @@ public class ViewPagerAdapter extends StaticPagerAdapter {
     public int getCount() {
         return 5;
     }
-
 
 }

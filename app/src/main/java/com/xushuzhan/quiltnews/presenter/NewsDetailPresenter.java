@@ -21,6 +21,7 @@ import com.xushuzhan.quiltnews.utils.DialogPopup;
 import com.xushuzhan.quiltnews.utils.SharedPreferenceUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -96,9 +97,10 @@ public class NewsDetailPresenter {
 //    }
 
     public void collect() {
+        Log.d(TAG, "collect: 开始执行收藏逻辑");
         if (AVUser.getCurrentUser()!=null) {
             final AVObject news = new AVObject("collection");// 构建对象
-            news.put(NewsInfo.USER_NAME, SharedPreferenceUtils.getString(APP.getAppContext(),"user_name"));
+            news.put(NewsInfo.USER_NAME, AVUser.getCurrentUser().getUsername());
             news.put(NewsInfo.NICK_NAME, SharedPreferenceUtils.getString(APP.getAppContext(),"nick_name"));
             news.put(NewsInfo.NEWS_UNIQUEKEY, iNewsDetailView.getNewsUniqueKey());
             news.put(NewsInfo.NEWS_TITLE, iNewsDetailView.getNewsTitle());
@@ -126,9 +128,13 @@ public class NewsDetailPresenter {
         news.deleteInBackground();
     }
 
-    public void setCollect() {
-        AVQuery<AVObject> query = new AVQuery<>("collection");
-        query.whereEqualTo(NewsInfo.NEWS_UNIQUEKEY, iNewsDetailView.getNewsUniqueKey());
+    public void setCollect(String userName) {
+
+        final AVQuery<AVObject> uniqueQuery = new AVQuery<>("collection");
+        uniqueQuery.whereEqualTo(NewsInfo.NEWS_UNIQUEKEY, iNewsDetailView.getNewsUniqueKey());
+        final AVQuery<AVObject> userQuery = new AVQuery<>("collection");
+        uniqueQuery.whereEqualTo(NewsInfo.USER_NAME,userName);
+        AVQuery<AVObject> query = AVQuery.and(Arrays.asList(uniqueQuery, userQuery));
         query.findInBackground(new FindCallback<AVObject>() {
             @Override
             public void done(List<AVObject> list, AVException e) {
@@ -149,7 +155,7 @@ public class NewsDetailPresenter {
 
     public void sendNewsDiscuss(String content){
         if(AVUser.getCurrentUser()!=null) {
-            if (content != null) {
+            if (!content.equals("")) {
                 AVObject news = new AVObject("comment");// 构建对象
                 news.put(NewsInfo.USER_NAME, AVUser.getCurrentUser().getUsername());
                 news.put(NewsInfo.NICK_NAME, SharedPreferenceUtils.getString(APP.getAppContext(), "nick_name"));

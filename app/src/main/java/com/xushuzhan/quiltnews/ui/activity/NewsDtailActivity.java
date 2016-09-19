@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.avos.avoscloud.AVObject;
+import com.avos.avoscloud.AVUser;
 import com.xushuzhan.quiltnews.APP;
 import com.xushuzhan.quiltnews.R;
 import com.xushuzhan.quiltnews.modle.network.config.NewsInfo;
@@ -52,9 +53,10 @@ public class NewsDtailActivity extends AppCompatActivity implements INewsDetailV
 
     ImageButton back;
     TextView titleToolbar;
- //   TextView discussCount;
-   // CheckBox collect;
+    //   TextView discussCount;
+    // CheckBox collect;
     LikeButtonView likeButtonView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,9 +71,11 @@ public class NewsDtailActivity extends AppCompatActivity implements INewsDetailV
         uniqueKey = intent.getStringExtra("uniquekey");
 
 
-        Log.d(TAG, "onCreate: " + title + ">>>" + picUrl + ">>>" + uniqueKey+">>>"+url);
+        Log.d(TAG, "onCreate: " + title + ">>>" + picUrl + ">>>" + uniqueKey + ">>>" + url);
         newsDetailPresenter = new NewsDetailPresenter(this);
-        newsDetailPresenter.setCollect();
+        if (AVUser.getCurrentUser() != null) {
+            newsDetailPresenter.setCollect(AVUser.getCurrentUser().getUsername());
+        }
         initView();
         initData();
     }
@@ -83,12 +87,12 @@ public class NewsDtailActivity extends AppCompatActivity implements INewsDetailV
     private void initView() {
         webView = (WebView) findViewById(R.id.web_view_news_dtail);
         WebSettings settings = webView.getSettings();
-        if(!NewsInfo.isShowPic){
+        if (!NewsInfo.isShowPic) {
             settings.setLoadsImagesAutomatically(false);  //不支持自动加载图片
         }
 
-        if(NewsInfo.FROM_VIEW_PAGE) {
-            settings.setJavaScriptEnabled(true);
+        if (NewsInfo.FROM_VIEW_PAGE) {
+            settings.setJavaScriptEnabled(false);
             webView.setWebViewClient(new WebViewClient() {
                 @Override
                 public boolean shouldOverrideUrlLoading(WebView view, String
@@ -98,8 +102,8 @@ public class NewsDtailActivity extends AppCompatActivity implements INewsDetailV
             });
             NewsInfo.FROM_VIEW_PAGE = false;
             Log.d(TAG, "initView: 来自轮播图");
-        }else if(NewsInfo.FROM_MY_COLLECTION){
-            settings.setJavaScriptEnabled(true);
+        } else if (NewsInfo.FROM_MY_COLLECTION) {
+            settings.setJavaScriptEnabled(false);
             webView.setWebViewClient(new WebViewClient() {
                 @Override
                 public boolean shouldOverrideUrlLoading(WebView view, String
@@ -108,6 +112,7 @@ public class NewsDtailActivity extends AppCompatActivity implements INewsDetailV
                 }
             });
             NewsInfo.FROM_MY_COLLECTION = false;
+            Log.d(TAG, "initView: 来自收藏");
         } else {
             settings.setJavaScriptEnabled(false);
             webView.setWebViewClient(new WebViewClient() {
@@ -152,21 +157,26 @@ public class NewsDtailActivity extends AppCompatActivity implements INewsDetailV
 
 //        collect = (CheckBox) findViewById(R.id.cb_news_detail_collect);
 //        collect.setOnCheckedChangeListener(this);
-    //    newsDetailPresenter.showDiscussCount();
-
+        //    newsDetailPresenter.showDiscussCount();
+        collect = (ImageView) findViewById(R.id.ivStar);
         likeButtonView = (LikeButtonView) findViewById(R.id.like_button);
         likeButtonView.setOnLikeButtonClickedListenner(new LikeButtonView.OnLikeButtonClickedListenner() {
             @Override
             public void onLikeButtonClick(boolean isChecked) {
-                if(isChecked){
-                    newsDetailPresenter.collect();
-                }else if (!isChecked){
-                    newsDetailPresenter.unCollect();
+                if (AVUser.getCurrentUser() != null) {
+                    if (isChecked) {
+                        newsDetailPresenter.collect();
+                    } else if (!isChecked) {
+                        newsDetailPresenter.unCollect();
+                    }
+                } else {
+                    collect.setImageResource(R.drawable.ic_star_rate_off);
+                    Toast.makeText(NewsDtailActivity.this, "请先登录!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
-        collect= (ImageView) findViewById(R.id.ivStar);
+
     }
 
     @Override
@@ -244,8 +254,8 @@ public class NewsDtailActivity extends AppCompatActivity implements INewsDetailV
             case R.id.bt_send_comment:
                 try {
                     newsDetailPresenter.sendNewsDiscuss(commentEditText.getText().toString());
-                }catch (Exception e){
-                    Log.d(TAG, "onClick: "+e.getMessage());
+                } catch (Exception e) {
+                    Log.d(TAG, "onClick: " + e.getMessage());
                 }
                 commentEditText.setText("");
                 break;
