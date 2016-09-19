@@ -15,6 +15,7 @@ public class NewsInfo {
     public static boolean isCollect = true;
 
     public static boolean FROM_VIEW_PAGE = false;
+    public static boolean FROM_MY_COLLECTION = false;
 
     public static boolean isShowPic = true;
 

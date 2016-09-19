@@ -57,7 +57,7 @@ public class SignUpPresenter {
                         SharedPreferenceUtils.putString(APP.getAppContext(),"nick_name","匿名用户");
                         UserInfo.userName = account;
                         UserInfo.nickName = "匿名用户";
-                        UserInfo.isNormalLogin = true;
+                     //   UserInfotrue;.isNormalLogin =
                         iSignUpView.moveToMainActivity();
 
                     } else {

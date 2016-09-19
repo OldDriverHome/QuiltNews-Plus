@@ -48,7 +48,7 @@ public class PersonalCenterPresenter {
     }
 
     public void signOut() {
-       /* if (UserInfo.isNormalLogin || UserInfo.isQQLogin) {
+        if (AVUser.getCurrentUser()!= null) {
             SharedPreferenceUtils.putString(APP.getAppContext(), UserInfo.ACCOUNT, null);
             SharedPreferenceUtils.putString(APP.getAppContext(), UserInfo.PASSWORD, null);
             SharedPreferenceUtils.putString(APP.getAppContext(), UserInfo.NICKNAME, null);
@@ -57,11 +57,11 @@ public class PersonalCenterPresenter {
             SharedPreferenceUtils.putString(APP.getAppContext(), "object_id", null);
             UserInfo.nickName = null;
             UserInfo.userName = null;
-            UserInfo.isQQLogin = false;
-            UserInfo.isNormalLogin = false;
+            iPersonalCenterView.setNickName("点击登录");
         } else {
             iPersonalCenterView.showToast("请登录后再试");
-        }*/
+        }
+
         AVUser.logOut();
     }
 
@@ -97,8 +97,6 @@ public class PersonalCenterPresenter {
             public void onSendClick(View view, String content) {
                 iPersonalCenterView.showToast("感谢你的意见，我们一定会不断改进！");
                 dialogPopup.dismiss();
-
-
             }
         });
     }
@@ -137,7 +135,7 @@ public class PersonalCenterPresenter {
         } else {Log.d(
                 TAG, "setQQNickName:  尝试获取网络的NickName");
             String objectId = SharedPreferenceUtils.getString(APP.getAppContext(), "object_id");
-            if (UserInfo.isQQLogin && objectId != null) {
+            if (AVUser.getCurrentUser()!=null && objectId != null) {
                 AVQuery<AVObject> avQuery = new AVQuery<>("_User");
                 avQuery.getInBackground(objectId, new GetCallback<AVObject>() {
                     @Override

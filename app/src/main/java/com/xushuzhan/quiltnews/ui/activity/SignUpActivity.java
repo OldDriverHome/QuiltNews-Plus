@@ -18,6 +18,7 @@ import com.tencent.tauth.Tencent;
 import com.xushuzhan.quiltnews.R;
 import com.xushuzhan.quiltnews.presenter.SignUpPresenter;
 import com.xushuzhan.quiltnews.ui.iview.ISignUpView;
+import com.xushuzhan.quiltnews.ui.view.LikeButtonView;
 
 public class SignUpActivity extends AppCompatActivity implements ISignUpView, View.OnClickListener {
     public static final String TAG = "SignUpActivity";
@@ -27,7 +28,7 @@ public class SignUpActivity extends AppCompatActivity implements ISignUpView, Vi
     EditText password;
     SignUpPresenter signUpPresenter;
     RelativeLayout signUp;
-    ImageButton ReadMode;
+    LikeButtonView likeButton;
     RelativeLayout qqLogin;
 
     @Override
@@ -64,11 +65,12 @@ public class SignUpActivity extends AppCompatActivity implements ISignUpView, Vi
             }
         });
 
-        ReadMode = (ImageButton) findViewById(R.id.ib_toobar_read_mode);
-        ReadMode.setVisibility(View.INVISIBLE);
 
         qqLogin = (RelativeLayout) findViewById(R.id.rl_qq_login_sign_up);
         qqLogin.setOnClickListener(this);
+
+        likeButton = (LikeButtonView) findViewById(R.id.like_button);
+        likeButton.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -88,6 +90,7 @@ public class SignUpActivity extends AppCompatActivity implements ISignUpView, Vi
 
     @Override
     public void moveToMainActivity() {
+        finish();
         startActivity(new Intent(SignUpActivity.this, MainActivity.class));
     }
 

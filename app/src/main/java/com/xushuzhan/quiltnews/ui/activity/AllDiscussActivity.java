@@ -31,7 +31,6 @@ public class AllDiscussActivity extends AppCompatActivity implements IAllDiscuss
     String title;
     String picUrl;
 
-    ImageButton ReadMode;
     ImageButton back;
     TextView titleToolbar;
     AllDiscussPresenter allDiscussPresenter;
@@ -67,8 +66,6 @@ public class AllDiscussActivity extends AppCompatActivity implements IAllDiscuss
                 allDiscussPresenter.sendDiscuss();
             }
         });
-        ReadMode = (ImageButton) findViewById(R.id.ib_toobar_read_mode);
-        ReadMode.setVisibility(View.INVISIBLE);
 
         back = (ImageButton) findViewById(R.id.ib_toolbar_back);
         back.setOnClickListener(new View.OnClickListener() {

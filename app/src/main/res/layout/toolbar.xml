@@ -26,15 +26,13 @@
         android:text="睡前精选"
         android:textColor="#fff"
         android:textSize="17sp" />
+    <com.xushuzhan.quiltnews.ui.view.LikeButtonView
+        android:id="@+id/like_button"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:layout_gravity="center"/>
 
-    <ImageButton
-        android:id="@+id/ib_toobar_read_mode"
-        android:layout_width="28dp"
-        android:layout_height="28dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignTop="@+id/ib_toolbar_back"
-        android:layout_marginRight="15dp"
-        android:src="#000"
-        android:layout_alignParentRight="true" />
 </RelativeLayout>
 

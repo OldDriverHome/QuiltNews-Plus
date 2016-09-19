@@ -48,14 +48,14 @@
                 android:textColor="@color/login_now"
                 android:textSize="16sp"/>
 
-            <ImageView
-                android:id="@+id/iv_edit_nick_name"
-                android:layout_width="18sp"
-                android:layout_height="18sp"
-                android:layout_alignBottom="@+id/personal_certen_login_now"
-                android:layout_toEndOf="@+id/iv_user_center_login"
-                android:layout_toRightOf="@+id/personal_certen_login_now"
-                android:src="@drawable/write_discuss1"/>
+            <!--<ImageView-->
+                <!--android:id="@+id/iv_edit_nick_name"-->
+                <!--android:layout_width="18sp"-->
+                <!--android:layout_height="18sp"-->
+                <!--android:layout_alignBottom="@+id/personal_certen_login_now"-->
+                <!--android:layout_toEndOf="@+id/iv_user_center_login"-->
+                <!--android:layout_toRightOf="@+id/personal_certen_login_now"-->
+                <!--android:src="@drawable/write_discuss1"/>-->
 
         </RelativeLayout>
 

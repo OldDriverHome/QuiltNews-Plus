@@ -13,6 +13,7 @@ import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -26,26 +27,34 @@ import com.xushuzhan.quiltnews.modle.network.config.NewsInfo;
 import com.xushuzhan.quiltnews.modle.network.config.UserInfo;
 import com.xushuzhan.quiltnews.presenter.NewsDetailPresenter;
 import com.xushuzhan.quiltnews.ui.iview.INewsDetailView;
+import com.xushuzhan.quiltnews.ui.view.LikeButtonView;
 import com.xushuzhan.quiltnews.utils.DialogPopup;
 import com.xushuzhan.quiltnews.utils.SharedPreferenceUtils;
 
 public class NewsDtailActivity extends AppCompatActivity implements INewsDetailView, View.OnClickListener, CompoundButton.OnCheckedChangeListener {
-    public static final String TAG = "NewsDtailActivity";
+    public static final String TAG = "NewsDtailActivityTAG";
     String url;
     String title;
     String picUrl;
     String uniqueKey;
     WebView webView;
     NewsDetailPresenter newsDetailPresenter;
-    RelativeLayout rlNewsDetailDiscuss;
-    Button allNews;
-    TextView allNewsCount;
-    ImageButton ReadMode;
+//    RelativeLayout rlNewsDetailDiscuss;
+//    Button allNews;
+//    TextView allNewsCount;
+
+    RelativeLayout allComment;
+    TextView commentCount;
+    Button sendComment;
+    EditText commentEditText;
+
+    ImageView collect;
+
     ImageButton back;
     TextView titleToolbar;
-    TextView discussCount;
-    CheckBox collect;
-
+ //   TextView discussCount;
+   // CheckBox collect;
+    LikeButtonView likeButtonView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +69,7 @@ public class NewsDtailActivity extends AppCompatActivity implements INewsDetailV
         uniqueKey = intent.getStringExtra("uniquekey");
 
 
-        Log.d(TAG, "onCreate: " + title + ">>>" + picUrl + ">>>" + uniqueKey);
+        Log.d(TAG, "onCreate: " + title + ">>>" + picUrl + ">>>" + uniqueKey+">>>"+url);
         newsDetailPresenter = new NewsDetailPresenter(this);
         newsDetailPresenter.setCollect();
         initView();
@@ -77,6 +86,7 @@ public class NewsDtailActivity extends AppCompatActivity implements INewsDetailV
         if(!NewsInfo.isShowPic){
             settings.setLoadsImagesAutomatically(false);  //不支持自动加载图片
         }
+
         if(NewsInfo.FROM_VIEW_PAGE) {
             settings.setJavaScriptEnabled(true);
             webView.setWebViewClient(new WebViewClient() {
@@ -87,7 +97,18 @@ public class NewsDtailActivity extends AppCompatActivity implements INewsDetailV
                 }
             });
             NewsInfo.FROM_VIEW_PAGE = false;
-        }else {
+            Log.d(TAG, "initView: 来自轮播图");
+        }else if(NewsInfo.FROM_MY_COLLECTION){
+            settings.setJavaScriptEnabled(true);
+            webView.setWebViewClient(new WebViewClient() {
+                @Override
+                public boolean shouldOverrideUrlLoading(WebView view, String
+                        url) {
+                    return false; // 不允许打开新的网页
+                }
+            });
+            NewsInfo.FROM_MY_COLLECTION = false;
+        } else {
             settings.setJavaScriptEnabled(false);
             webView.setWebViewClient(new WebViewClient() {
                 @Override
@@ -98,16 +119,23 @@ public class NewsDtailActivity extends AppCompatActivity implements INewsDetailV
                 }
             });
             settings.setTextZoom(100);
+            Log.d(TAG, "initView: 来自其他");
         }
-        rlNewsDetailDiscuss = (RelativeLayout) findViewById(R.id.rl_write_discuss);
-        rlNewsDetailDiscuss.setOnClickListener(this);
-        allNews = (Button) findViewById(R.id.bt_news_detail_discuss);
-        allNews.setOnClickListener(this);
-        allNewsCount = (TextView) findViewById(R.id.tv_news_detail_discuss_count);
-        allNewsCount.setOnClickListener(this);
-        ReadMode = (ImageButton) findViewById(R.id.ib_toobar_read_mode);
 
-        ReadMode.setVisibility(View.INVISIBLE);
+
+//        rlNewsDetailDiscuss = (RelativeLayout) findViewById(R.id.rl_write_discuss);
+//        rlNewsDetailDiscuss.setOnClickListener(this);
+//        allNews = (Button) findViewById(R.id.bt_news_detail_discuss);
+//        allNews.setOnClickListener(this);
+//        allNewsCount = (TextView) findViewById(R.id.tv_news_detail_discuss_count);
+//        allNewsCount.setOnClickListener(this);
+
+        allComment = (RelativeLayout) findViewById(R.id.allComments);
+        allComment.setOnClickListener(this);
+        commentCount = (TextView) findViewById(R.id.tv_comments_count);
+        sendComment = (Button) findViewById(R.id.bt_send_comment);
+        sendComment.setOnClickListener(this);
+        commentEditText = (EditText) findViewById(R.id.et_comments_content);
 
         back = (ImageButton) findViewById(R.id.ib_toolbar_back);
         back.setOnClickListener(new View.OnClickListener() {
@@ -120,11 +148,25 @@ public class NewsDtailActivity extends AppCompatActivity implements INewsDetailV
         titleToolbar = (TextView) findViewById(R.id.tv_title_toolbar);
         titleToolbar.setVisibility(View.INVISIBLE);
 
-        discussCount = (TextView) findViewById(R.id.tv_news_detail_discuss_count);
+        //discussCount = (TextView) findViewById(R.id.tv_comments_count);
 
-        collect = (CheckBox) findViewById(R.id.cb_news_detail_collect);
-        collect.setOnCheckedChangeListener(this);
-        newsDetailPresenter.showDiscussCount();
+//        collect = (CheckBox) findViewById(R.id.cb_news_detail_collect);
+//        collect.setOnCheckedChangeListener(this);
+    //    newsDetailPresenter.showDiscussCount();
+
+        likeButtonView = (LikeButtonView) findViewById(R.id.like_button);
+        likeButtonView.setOnLikeButtonClickedListenner(new LikeButtonView.OnLikeButtonClickedListenner() {
+            @Override
+            public void onLikeButtonClick(boolean isChecked) {
+                if(isChecked){
+                    newsDetailPresenter.collect();
+                }else if (!isChecked){
+                    newsDetailPresenter.unCollect();
+                }
+            }
+        });
+
+        collect= (ImageView) findViewById(R.id.ivStar);
     }
 
     @Override
@@ -145,8 +187,8 @@ public class NewsDtailActivity extends AppCompatActivity implements INewsDetailV
 
     @Override
     public void setDiscussCount(String count) {
-        allNewsCount.setText(count);
-
+        //allNewsCount.setText(count);
+        commentCount.setText(count);
     }
 
     @Override
@@ -181,12 +223,12 @@ public class NewsDtailActivity extends AppCompatActivity implements INewsDetailV
 
     @Override
     public void addDiscussCount() {
-        discussCount.setText((Integer.parseInt(discussCount.getText().toString()) + 1) + "");
+        commentCount.setText((Integer.parseInt(commentCount.getText().toString()) + 1) + "");
     }
 
     @Override
     public void setColectButton() {
-        collect.setChecked(true);
+        collect.setImageResource(R.drawable.ic_star_rate_on);
     }
 
 
@@ -199,12 +241,15 @@ public class NewsDtailActivity extends AppCompatActivity implements INewsDetailV
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.rl_write_discuss:
-                newsDetailPresenter.showPopupWindow();
-
+            case R.id.bt_send_comment:
+                try {
+                    newsDetailPresenter.sendNewsDiscuss(commentEditText.getText().toString());
+                }catch (Exception e){
+                    Log.d(TAG, "onClick: "+e.getMessage());
+                }
+                commentEditText.setText("");
                 break;
-            case R.id.bt_news_detail_discuss:
-            case R.id.tv_news_detail_discuss_count:
+            case R.id.allComments:
                 newsDetailPresenter.intentToAllDiscuss();
                 break;
             default:

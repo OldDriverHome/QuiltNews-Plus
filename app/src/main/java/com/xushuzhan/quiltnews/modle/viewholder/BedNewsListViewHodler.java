@@ -14,25 +14,27 @@ import com.xushuzhan.quiltnews.modle.network.config.NewsInfo;
 /**
  * Created by xushuzhan on 2016/8/19.
  */
-public class BedNewsListViewHodler extends BaseViewHolder<BedNewsListBeen.RetDataBean> {
+public class BedNewsListViewHodler extends BaseViewHolder<BedNewsListBeen.ItemBean> {
     ImageView picture;
     TextView title;
-    TextView content_small;
+    TextView resource;
+    TextView time;
 
     public BedNewsListViewHodler(ViewGroup parent, @LayoutRes int res) {
         super(parent, res);
         picture = $(R.id.iv_bed_news_list_pic);
         title = $(R.id.tv_news_list_item_title);
-        content_small = $(R.id.tv_bed_news_list_content);
+        resource = $(R.id.tv_bed_news_list_source);
+        time = $(R.id.tv_bed_news_list_time);
     }
 
     @Override
-    public void setData(BedNewsListBeen.RetDataBean data) {
+    public void setData(BedNewsListBeen.ItemBean data) {
         super.setData(data);
 
         if (NewsInfo.isShowPic) {
             Glide.with(getContext())
-                    .load(data.getImage_url())
+                    .load(data.getThumbnail())
                     .placeholder(R.drawable.loading_s)
                     .error(R.drawable.bed_news_error)
                     .into(picture);
@@ -40,6 +42,7 @@ public class BedNewsListViewHodler extends BaseViewHolder<BedNewsListBeen.RetDat
             picture.setImageResource(R.drawable.loading_s);
         }
         title.setText(data.getTitle());
-        content_small.setText(data.getAbstractX());
+        resource.setText(data.getSource());
+        time.setText(data.getUpdateTime());
     }
 }

@@ -12,37 +12,50 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.xushuzhan.quiltnews.R;
+import com.xushuzhan.quiltnews.presenter.BedNewsDetailPresenter;
+import com.xushuzhan.quiltnews.ui.iview.IBedNewsDetailView;
+import com.xushuzhan.quiltnews.ui.view.LikeButtonView;
 
-public class BedNewsDetailActivity extends AppCompatActivity {
-    String url;
+public class BedNewsDetailActivity extends AppCompatActivity implements IBedNewsDetailView {
+    String aid;
     WebView webView;
     ImageButton back;
-    ImageButton ReadMode;
+    String CSS_STYPE = "<head><style>img{max-width:340px !important;}</style></head>";
     TextView title;
+    BedNewsDetailPresenter bedNewsDetailPresenter;
+    TextView newsTitle;
+    TextView newsTime;
+    LikeButtonView likeButtonView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bed_news_detail);
+        newsTitle = (TextView) findViewById(R.id.tv_bed_news_detail_title);
+        newsTime = (TextView) findViewById(R.id.tv_bed_news_detail_time);
         Intent intent = getIntent();
-        url = intent.getStringExtra("url");
+        aid = intent.getStringExtra("aid");
+        bedNewsDetailPresenter = new BedNewsDetailPresenter(this);
         initView();
     }
 
     private void initView() {
+        likeButtonView = (LikeButtonView) findViewById(R.id.like_button);
+        likeButtonView.setVisibility(View.INVISIBLE);
         webView = (WebView) findViewById(R.id.bed_news_web_view);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String
                     url) {
-
+                view.loadUrl(url); // 根据传入的参数再去加载新的网页
                 return false;
             }
         });
-        webView.loadUrl(url);
+        WebSettings settings = webView.getSettings();
+        settings.setLoadWithOverviewMode(true);
 
-        ReadMode = (ImageButton) findViewById(R.id.ib_toobar_read_mode);
-        ReadMode.setVisibility(View.INVISIBLE);
+        bedNewsDetailPresenter.showNewsDetail(aid);
+
         back= (ImageButton) findViewById(R.id.ib_toolbar_back);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,6 +71,7 @@ public class BedNewsDetailActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        bedNewsDetailPresenter = null;
         webView.destroy();
     }
 
@@ -65,5 +79,16 @@ public class BedNewsDetailActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         webView.destroy();
+    }
+
+    @Override
+    public void showNewsDtail(String content) {
+        webView.loadDataWithBaseURL(null, CSS_STYPE+content , "text/html", "utf-8",null);
+    }
+
+    @Override
+    public void setTitleAndTime(String title, String time) {
+        newsTime.setText(time);
+        newsTitle.setText(title);
     }
 }

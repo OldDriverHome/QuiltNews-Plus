@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +19,10 @@ import com.xushuzhan.quiltnews.R;
 import com.xushuzhan.quiltnews.modle.network.config.ReadInfo;
 import com.xushuzhan.quiltnews.presenter.BedNewsListPresenter;
 import com.xushuzhan.quiltnews.ui.activity.BedNewsDetailActivity;
+import com.xushuzhan.quiltnews.ui.activity.SlidesActicity.SlidesActivity;
 import com.xushuzhan.quiltnews.ui.adapter.BedNewsListAdapter;
 import com.xushuzhan.quiltnews.ui.iview.IBedNewsListView;
+import com.xushuzhan.quiltnews.ui.view.LikeButtonView;
 
 public class BeforeBedNewsFragment extends Fragment implements IBedNewsListView, SwipeRefreshLayout.OnRefreshListener {
     BedNewsListPresenter bedNewsListPresenter;
@@ -27,7 +30,8 @@ public class BeforeBedNewsFragment extends Fragment implements IBedNewsListView,
     BedNewsListAdapter adapter;
     LinearLayout linearLayout;
     View view;
-
+    LikeButtonView likeButtonView;
+    public static final String TAG = "BeforeBedNewsFragment";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -77,14 +81,20 @@ public class BeforeBedNewsFragment extends Fragment implements IBedNewsListView,
 
     @Override
     public void showToast(String content) {
-
         Toast.makeText(getContext(), content, Toast.LENGTH_LONG).show();
     }
 
     @Override
-    public void intentToBenNewsDtail(String url) {
+    public void intentToBenNewsDtail(String aid) {
         Intent intent = new Intent(getContext(), BedNewsDetailActivity.class);
-        intent.putExtra("url", url);
+        intent.putExtra("aid", aid);
+        startActivity(intent);
+    }
+
+    @Override
+    public void intentToSlidesActivity(String aid) {
+        Intent intent = new Intent(getContext(), SlidesActivity.class);
+        intent.putExtra("aid", aid);
         startActivity(intent);
     }
 

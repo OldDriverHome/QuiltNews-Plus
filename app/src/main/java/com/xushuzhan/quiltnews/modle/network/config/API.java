@@ -17,4 +17,7 @@ public class API {
     public static final String YOUKU_CLIENT_ID= "bf2470fe3dfc9afc";
     public static final String BAIDU_API_APP_KEY = "fbb5240ac0aea9e4c1fbd62da039797b";
     public static final String BAI_DU_BASE_URL = "http://apis.baidu.com/";
+
+    public static final String FENG_HUANG_WANG_NEWS_LIST="http://api.irecommend.ifeng.com/";
+    public static final String SLIDES="http://api.iclient.ifeng.com/";
 }

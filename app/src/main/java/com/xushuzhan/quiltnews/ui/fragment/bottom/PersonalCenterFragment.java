@@ -17,10 +17,14 @@ import android.widget.Toast;
 
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVFile;
+import com.avos.avoscloud.AVObject;
+import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.GetCallback;
 import com.avos.avoscloud.ProgressCallback;
 import com.avos.avoscloud.SaveCallback;
 import com.bumptech.glide.Glide;
+import com.xushuzhan.quiltnews.APP;
 import com.xushuzhan.quiltnews.R;
 import com.xushuzhan.quiltnews.modle.network.config.NewsInfo;
 import com.xushuzhan.quiltnews.modle.network.config.UserInfo;
@@ -29,6 +33,7 @@ import com.xushuzhan.quiltnews.ui.activity.LoginActivity;
 import com.xushuzhan.quiltnews.ui.activity.MyCollectionActivity;
 import com.xushuzhan.quiltnews.ui.activity.MyDiscussActivity;
 import com.xushuzhan.quiltnews.ui.iview.IpersonalCenterView;
+import com.xushuzhan.quiltnews.utils.SharedPreferenceUtils;
 
 import java.io.FileNotFoundException;
 
@@ -53,7 +58,7 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
     RelativeLayout idea;
     RelativeLayout update;
     RelativeLayout signOut;
-    ImageView editNickName;
+//    ImageView editNickName;
     TextView nickName;
     TextView ViewModeTV;
 
@@ -68,22 +73,10 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
         view = LayoutInflater.from(getContext()).inflate(R.layout.fragment_personal_certen, container, false);
         initView();
         personalCenterPresenter = new PersonalCenterPresenter(this);
-        personalCenterPresenter.setHeadPicture();
         isLogin = AVUser.getCurrentUser() != null;
         setupNewHeadPicture();
         loadHeadPicture();
-        String nickNameToText = isLogin ? "输入昵称" : "点击登录";
-        nickName.setText(nickNameToText);
-        nickName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isLogin) {
-                    personalCenterPresenter.editNickName();
-                } else {
-                    personalCenterPresenter.intentToLoginActivity();
-                }
-            }
-        });
+        checkInfo();
         return view;
     }
 
@@ -102,7 +95,7 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
         userLogin.setOnClickListener(this);
         collect = (RelativeLayout) view.findViewById(R.id.rl_pc_my_collect);
         collect.setOnClickListener(this);
-        editNickName = (ImageView) view.findViewById(R.id.iv_edit_nick_name);
+
 //        download = (RelativeLayout) view.findViewById(R.id.rl_pc_my_down);
 //        download.setOnClickListener(this);
         idea = (RelativeLayout) view.findViewById(R.id.rl_pc_idea);
@@ -136,32 +129,54 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
                 }
                 break;
             case R.id.rl_personal_center_my_discuss:
-                personalCenterPresenter.intentToMyDiscuss();
+                if(isLogin){
+                    personalCenterPresenter.intentToMyDiscuss();
+                }else {
+                    Toast.makeText(getContext(), "请先登录！", Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.iv_user_center_login:
             case R.id.personal_certen_login_now:
                 //personalCenterPresenter.intentToLoginActivity();
                 break;
             case R.id.rl_pc_my_collect:
+                if(isLogin){
                 startActivity(new Intent(getContext(), MyCollectionActivity.class));
+                }else {
+                    Toast.makeText(getContext(), "请先登录！", Toast.LENGTH_SHORT).show();
+                }
                 break;
 //            case R.id.rl_pc_my_down:
 //                Toast.makeText(getContext(), "抱歉-这个功能正在开发", Toast.LENGTH_SHORT).show();
 //                break;
             case R.id.rl_pc_idea:
-                personalCenterPresenter.showIdead();
+                if(isLogin){
+                    personalCenterPresenter.showIdead();
+                }else {
+                    Toast.makeText(getContext(), "请先登录！", Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.rl_pc_check_update:
                 personalCenterPresenter.checkUpdate();
                 break;
             case R.id.rl_pc_sign_out:
                 if (isLogin) {
-                    AVUser.logOut();
-                    Toast.makeText(getActivity(), "退出登录成功", Toast.LENGTH_SHORT).show();
+                    personalCenterPresenter.signOut();
+                    Glide.with(getActivity()).load(R.drawable.ic_friend_1).into(userLogin);
+                    isLogin = false;
+                    setupNewHeadPicture();
+                    nickName.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            personalCenterPresenter.intentToLoginActivity();
+                        }
+                    });
+                    Toast.makeText(getActivity(), "退出登录成功！", Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(getContext(), "请先登录！", Toast.LENGTH_SHORT).show();
                 }
                 break;
-            case R.id.iv_edit_nick_name:
-                personalCenterPresenter.editNickName();
+
             default:
                 break;
         }
@@ -179,18 +194,10 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
 
     @Override
     public void setHeadPicture() {
-        if (UserInfo.isNormalLogin) {
-            //nickName.setClickable(false);
-            //nickName.setText(UserInfo.nickName);
-        } else if (UserInfo.isQQLogin) {
+        if (AVUser.getCurrentUser() != null) {
             personalCenterPresenter.setQQNickName();
-            //nickName.setClickable(false);
-            editNickName.setVisibility(View.INVISIBLE);
-        }
-        if (UserInfo.nickName != null && UserInfo.nickName.equals("匿名用户")) {
-            //nickName.setClickable(false);
-            //nickName.setText(UserInfo.nickName);
-            editNickName.setVisibility(View.VISIBLE);
+
+            Log.d(TAG, "setHeadPicture: 终于用到这个方法了");
         }
     }
 
@@ -231,11 +238,6 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
                 }
             });
         } else {
-            try {
-                checkInfo();
-            } catch (Exception e) {
-                Log.d(TAG, "initView: " + e.getMessage());
-            }
             userLogin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -259,7 +261,7 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
                     Log.d(TAG, "done: 头像地址" + userPicture.getUrl());
                     Glide.with(getActivity()).load(pictureUri).into(userLogin);
                 } else {
-                    Log.d(TAG, "done: "+e);
+                    Log.d(TAG, "done: " + e);
                 }
                 // TODO: 2016/9/9 取消进度条
             }
@@ -282,7 +284,7 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
             userLogin.setClickable(true);
             //nickName.setClickable(true);
             //nickName.setText(getResources().getText(R.string.login_now));
-            editNickName.setVisibility(View.INVISIBLE);
+            //editNickName.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -298,7 +300,7 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
 
     @Override
     public void hintEditNickButton() {
-        editNickName.setVisibility(View.INVISIBLE);
+//        editNickName.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -313,20 +315,50 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
     }
 
     private void checkInfo() {
-        if ((UserInfo.isQQLogin || UserInfo.isNormalLogin)) {
-            if (!UserInfo.nickName.equals(getResources().getText(R.string.hint_user))) {
-                userLogin.setClickable(false);
-                editNickName.setVisibility(View.INVISIBLE);
-            } else {
-                editNickName.setOnClickListener(this);
-            }
+        if(SharedPreferenceUtils.getString(APP.getAppContext(), "nick_name")!=null&&!SharedPreferenceUtils.getString(APP.getAppContext(), "nick_name").equals("匿名用户")){
+            nickName.setText(SharedPreferenceUtils.getString(APP.getAppContext(), "nick_name"));
+        }else {
+          //  String objectId = SharedPreferenceUtils.getString(APP.getAppContext(), "object_id");
+            if (AVUser.getCurrentUser()!=null) {
+                Log.d(TAG, "checkInfo: objectid="+AVUser.getCurrentUser().getObjectId());
+                AVQuery<AVObject> avQuery = new AVQuery<>("_User");
+                avQuery.getInBackground(AVUser.getCurrentUser().getObjectId(), new GetCallback<AVObject>() {
+                    @Override
+                    public void done(AVObject avObject, AVException e) {
+                        if (avObject.get("nick_name")!=null) {
+                            nickName.setText(avObject.get("nick_name").toString());
+                            SharedPreferenceUtils.putString(APP.getAppContext(),"nick_name",avObject.get("nick_name").toString());
+                        } else {
+                            nickName.setText("输入昵称");
+                        }
 
-        } else if (!UserInfo.isQQLogin || !UserInfo.isNormalLogin) {
-            editNickName.setVisibility(View.INVISIBLE);
-            userLogin.setClickable(true);
-        } else {
-            editNickName.setOnClickListener(this);
+                    }
+                });
+            }
         }
+
+        nickName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isLogin) {
+                    personalCenterPresenter.editNickName();
+                } else {
+                    personalCenterPresenter.intentToLoginActivity();
+                }
+            }
+        });
+
+
+//        if (isLogin) {
+//            if(nickName.getText().toString().equals("匿名用户")) {
+//                editNickName.setVisibility(View.VISIBLE);
+//                editNickName.setOnClickListener(this);
+//            }else {
+//                editNickName.setVisibility(View.INVISIBLE);
+//            }
+//        } else{
+//            editNickName.setVisibility(View.VISIBLE);
+//        }
         if (!NewsInfo.isChecked) {
             ViewModeTV.setText(getResources().getText(R.string.font_mode));
             ViewModeIV.setImageResource(R.drawable.font_mode);

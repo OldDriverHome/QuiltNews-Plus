@@ -12,7 +12,7 @@ import com.xushuzhan.quiltnews.modle.been.BedNewsListBeen;
 /**
  * Created by xushuzhan on 2016/8/19.
  */
-public class BedNewsListAdapter extends RecyclerArrayAdapter<BedNewsListBeen.RetDataBean> {
+public class BedNewsListAdapter extends RecyclerArrayAdapter<BedNewsListBeen.ItemBean> {
     public BedNewsListAdapter(Context context) {
         super(context);
     }

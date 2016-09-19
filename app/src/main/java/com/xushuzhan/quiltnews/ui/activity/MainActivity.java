@@ -18,15 +18,15 @@ import com.xushuzhan.quiltnews.ui.fragment.bottom.BeforeBedNewsFragment;
 import com.xushuzhan.quiltnews.ui.fragment.bottom.EyeshotNewsFragment;
 import com.xushuzhan.quiltnews.ui.fragment.bottom.HotNewsFragment;
 import com.xushuzhan.quiltnews.ui.fragment.bottom.PersonalCenterFragment;
+import com.xushuzhan.quiltnews.ui.view.LikeButtonView;
 
 public class MainActivity extends AppCompatActivity {
     public static final String TAG = "MainActivity";
     RadioGroup radioGroup;
     FragmentManager fragmentManager;
-    ImageButton ReadMode;
     TextView title;
     ImageButton back;
-
+    LikeButtonView likeButtonView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,20 +75,14 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        ReadMode = (ImageButton) findViewById(R.id.ib_toobar_read_mode);
-        ReadMode.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //startActivity(new Intent(MainActivity.this,LoginActivity.class));
-                startActivity(new Intent(MainActivity.this,TestActivity.class));
-            }
-        });
-        ReadMode.setVisibility(View.INVISIBLE);
         back= (ImageButton) findViewById(R.id.ib_toolbar_back);
         back.setVisibility(View.INVISIBLE);
 
         title = (TextView) findViewById(R.id.tv_title_toolbar);
         title.setText("被窝资讯");
+
+        likeButtonView = (LikeButtonView) findViewById(R.id.like_button);
+        likeButtonView.setVisibility(View.INVISIBLE);
     }
 
 

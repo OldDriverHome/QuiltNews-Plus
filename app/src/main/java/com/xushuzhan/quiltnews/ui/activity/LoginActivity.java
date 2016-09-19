@@ -15,6 +15,7 @@ import com.tencent.tauth.Tencent;
 import com.xushuzhan.quiltnews.R;
 import com.xushuzhan.quiltnews.presenter.LoginPresenter;
 import com.xushuzhan.quiltnews.ui.iview.IloginView;
+import com.xushuzhan.quiltnews.ui.view.LikeButtonView;
 
 public class LoginActivity extends AppCompatActivity implements IloginView, View.OnClickListener {
 
@@ -26,7 +27,7 @@ public class LoginActivity extends AppCompatActivity implements IloginView, View
     LoginPresenter loginPresenter;
     TextView title;
     ImageButton back;
-    ImageButton ReadMode;
+    LikeButtonView likeButton;
     RelativeLayout loginByQQ;
 
     @Override
@@ -51,11 +52,11 @@ public class LoginActivity extends AppCompatActivity implements IloginView, View
         signUpNow = (TextView) findViewById(R.id.tv_login_sign_up_now);
         signUpNow.setOnClickListener(this);
 
-        ReadMode = (ImageButton) findViewById(R.id.ib_toobar_read_mode);
-        ReadMode.setVisibility(View.INVISIBLE);
-
         loginByQQ = (RelativeLayout) findViewById(R.id.qq_login);
         loginByQQ.setOnClickListener(this);
+
+        likeButton = (LikeButtonView) findViewById(R.id.like_button);
+        likeButton.setVisibility(View.INVISIBLE);
     }
 
     @Override

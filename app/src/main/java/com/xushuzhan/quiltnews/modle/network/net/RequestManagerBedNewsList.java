@@ -1,9 +1,8 @@
 package com.xushuzhan.quiltnews.modle.network.net;
 
 import com.xushuzhan.quiltnews.modle.been.BedNewsListBeen;
-import com.xushuzhan.quiltnews.modle.been.ViewPagersBeen;
 import com.xushuzhan.quiltnews.modle.network.config.API;
-import com.xushuzhan.quiltnews.modle.network.serverce.ApiServer;
+import com.xushuzhan.quiltnews.modle.network.serverce.ApiServerce;
 
 import java.util.concurrent.TimeUnit;
 
@@ -16,14 +15,14 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
- * Created by xushuzhan on 2016/8/19.
+ * Created by xushuzhan on 2016/9/18.
  */
 public class RequestManagerBedNewsList {
     private static final int DEFAULT_TIMEOUT = 10;
 
     private Retrofit retrofit;
 
-    private ApiServer mApiServer;
+    private ApiServerce apiServerce;
 
     //构造方法私有
     private RequestManagerBedNewsList() {
@@ -35,10 +34,11 @@ public class RequestManagerBedNewsList {
                 .client(httpClientBuilder.build())
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .baseUrl(API.BAI_DU_BASE_URL)
+                .baseUrl(API.FENG_HUANG_WANG_NEWS_LIST)
                 .build();
 
-        mApiServer = retrofit.create(ApiServer.class);
+        apiServerce = retrofit.create(ApiServerce.class);
+
     }
 
     //在访问RequestManagerNewsList时创建单例
@@ -59,28 +59,13 @@ public class RequestManagerBedNewsList {
 
     public void getNewsList(Subscriber<BedNewsListBeen> subscriber) {
 
-        mApiServer.getBeforeBedNewsList(API.BAIDU_API_APP_KEY)
+        apiServerce.getBedNewsList()
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);
     }
 
-//    public void getViewPager(Subscriber<ViewPagerBeen> subscriber) {
-//
-//        mApiServer.getViewPagerContent(API.BAIDU_API_APP_KEY,"popular","2")
-//                .subscribeOn(Schedulers.io())
-//                .unsubscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(subscriber);
-//    }
 
-    public void getViewPagers(Subscriber<ViewPagersBeen> subscriber){
-        mApiServer.getViewPagersContent(API.BAIDU_API_APP_KEY)
-                .subscribeOn(Schedulers.io())
-                .unsubscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(subscriber);
-    }
 
 }
