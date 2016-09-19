@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.xushuzhan.quiltnews.R;
 import com.xushuzhan.quiltnews.ui.activity.MainActivity;
 
@@ -41,7 +42,7 @@ public class GuideFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mTvGuide.setText(getArguments().getString(ARGUMENT_STRING));
-        mIvGuide.setImageResource(getArguments().getInt(ARGUMENT_DRAWABLE));
+        Glide.with(getActivity()).load(getArguments().getInt(ARGUMENT_DRAWABLE)).into(mIvGuide);
         mBtGuide.setVisibility(View.GONE);
         mBtGuide.setOnClickListener(new View.OnClickListener() {
             @Override

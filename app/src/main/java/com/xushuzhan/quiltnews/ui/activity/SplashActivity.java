@@ -3,17 +3,26 @@ package com.xushuzhan.quiltnews.ui.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.GetCallback;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.xushuzhan.quiltnews.APP;
 import com.xushuzhan.quiltnews.R;
 import com.xushuzhan.quiltnews.modle.network.config.NewsInfo;
@@ -33,6 +42,21 @@ public class SplashActivity extends Activity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_splash);
+
+        ImageView imageView = (ImageView) findViewById(R.id.iv_icon_splash_activity);
+        Glide.with(this).load(R.drawable.icon).into(imageView);
+
+        final RelativeLayout layout = (RelativeLayout) findViewById(R.id.rv_start);
+        Glide.with(this).load(R.drawable.bg_splash).asBitmap().into(new SimpleTarget<Bitmap>() {
+            @Override
+            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                Drawable drawable = new BitmapDrawable(resource);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    layout.setBackground(drawable);
+                }
+            }
+        });
+        handler.sendEmptyMessageDelayed(START_ACTIVITY, 1000);
         NewsInfo.isShowPic = true;//默认设置可以显示图片
         try {
             UserInfo.tryLogin();
@@ -46,15 +70,15 @@ public class SplashActivity extends Activity {
                             SharedPreferenceUtils.putString(APP.getAppContext(), "version", avObject.get("version").toString());
                             Log.d(TAG, "done: " + avObject.get("version").toString());
                         } catch (Exception ee) {
+                            ee.printStackTrace();
                         }
-
                     }
                 });
             }
         } catch (Exception ee) {
             Log.d(TAG, "onCreate: " + ee.getMessage());
         }
-        handler.sendEmptyMessageDelayed(START_ACTIVITY, 1000);
+        handler.sendEmptyMessageDelayed(START_ACTIVITY, 800);
     }
 
     private Handler handler = new Handler() {
