@@ -124,7 +124,6 @@ public class PersonalCenterPresenter {
                 }
             }
         });
-
     }
 
     public void setQQNickName() {

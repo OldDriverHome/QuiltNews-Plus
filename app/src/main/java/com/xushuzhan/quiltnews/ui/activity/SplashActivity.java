@@ -42,6 +42,7 @@ public class SplashActivity extends Activity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_splash);
+        Log.d(TAG, "onCreate: 启动界面启动");
         ImageView imageView = (ImageView) findViewById(R.id.iv_icon_splash_activity);
         Glide.with(this).load(R.drawable.icon).into(imageView);
 
@@ -73,6 +74,7 @@ public class SplashActivity extends Activity {
                         }
                     }
                 });
+                Log.d(TAG, "onCreate: 加载信息完毕");
             }
         } catch (Exception ee) {
             Log.d(TAG, "onCreate: " + ee.getMessage());

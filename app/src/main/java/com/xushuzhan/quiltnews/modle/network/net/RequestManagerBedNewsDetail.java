@@ -34,9 +34,7 @@ public class RequestManagerBedNewsDetail {
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .baseUrl(API.SLIDES)
                 .build();
-
         apiServerce = retrofit.create(ApiServer.class);
-
     }
 
     //在访问RequestManagerNewsList时创建单例

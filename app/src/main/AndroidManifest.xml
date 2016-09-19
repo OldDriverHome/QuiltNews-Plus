@@ -75,8 +75,8 @@
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
-        <activity android:name=".ui.guide.GuideActivity"></activity>
-        <activity android:name=".ui.activity.SlidesActicity.SlidesActivity"></activity>
+        <activity android:name=".ui.guide.GuideActivity"/>
+        <activity android:name=".ui.activity.SlidesActicity.SlidesActivity"/>
     </application>
 
 </manifest>

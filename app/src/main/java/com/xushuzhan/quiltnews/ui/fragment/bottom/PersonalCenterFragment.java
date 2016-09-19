@@ -78,12 +78,15 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
         setupNewHeadPicture();
         loadHeadPicture();
         checkInfo();
-        if (AVUser.getCurrentUser() != null) {
-            nickName.setText("设置昵称");
-        } else {
-            nickName.setText("点击登陆");
-        }
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (AVUser.getCurrentUser() != null && AVUser.getCurrentUser().get("nick_name") == null) {
+            nickName.setText("设置昵称");
+        }
     }
 
     private void initView() {
@@ -101,9 +104,6 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
         userLogin.setOnClickListener(this);
         collect = (RelativeLayout) view.findViewById(R.id.rl_pc_my_collect);
         collect.setOnClickListener(this);
-
-//        download = (RelativeLayout) view.findViewById(R.id.rl_pc_my_down);
-//        download.setOnClickListener(this);
         idea = (RelativeLayout) view.findViewById(R.id.rl_pc_idea);
         idea.setOnClickListener(this);
         update = (RelativeLayout) view.findViewById(R.id.rl_pc_check_update);
@@ -112,7 +112,6 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
         signOut = (RelativeLayout) view.findViewById(R.id.rl_pc_sign_out);
         signOut.setOnClickListener(this);
     }
-
 
     @Override
     public void onClick(View v) {
