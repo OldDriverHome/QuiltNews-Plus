@@ -8,7 +8,10 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.jude.rollviewpager.adapter.StaticPagerAdapter;
+import com.jude.utils.JUtils;
+import com.xushuzhan.quiltnews.APP;
 import com.xushuzhan.quiltnews.R;
+import com.xushuzhan.quiltnews.cache.Cache;
 import com.xushuzhan.quiltnews.modle.been.ViewPagerBeen;
 import com.xushuzhan.quiltnews.modle.network.config.NewsInfo;
 import com.xushuzhan.quiltnews.modle.network.net.RequestManagerViewPager;
@@ -30,38 +33,52 @@ public class ViewPagerAdapter extends StaticPagerAdapter {
     @Override
     public View getView(ViewGroup container, final int position) {
         final BannerImageView view = new BannerImageView(container.getContext());
-        view.setScaleType(ImageView.ScaleType.FIT_XY);
-        Subscriber<ViewPagerBeen> subscriber = new Subscriber<ViewPagerBeen>() {
-            @Override
-            public void onCompleted() {
+        final Cache<ViewPagerBeen> cache = new Cache<>(APP.getAppContext());
+        if (JUtils.isNetWorkAvilable()) {
+            Subscriber<ViewPagerBeen> subscriber = new Subscriber<ViewPagerBeen>() {
+                @Override
+                public void onCompleted() {
 
-            }
+                }
 
-            @Override
-            public void onError(Throwable e) {
-                Log.d(TAG, "onError: " + e.getMessage());
-            }
+                @Override
+                public void onError(Throwable e) {
+                    Log.d(TAG, "onError: " + e.getMessage());
+                }
 
-            @Override
-            public void onNext(ViewPagerBeen viewPagerBeen) {
-                viewPagersContent = viewPagerBeen;
-                if(NewsInfo.isShowPic) {
-                    view.setText(viewPagerBeen.getShowapi_res_body().getNewslist().get(position).getTitle());
+                @Override
+                public void onNext(ViewPagerBeen viewPagerBeen) {
+                    viewPagersContent = viewPagerBeen;
+                    cache.saveCache(viewPagerBeen);
+                    if (NewsInfo.isShowPic) {
+                        view.setText(viewPagerBeen.getShowapi_res_body().getNewslist().get(position).getTitle());
+                        Glide.with(ctx)
+                                .load(viewPagerBeen.getShowapi_res_body().getNewslist().get(position).getPicUrl())
+                                .error(R.drawable.no_picture)
+                                .into(view);
+                    } else {
+                        view.setImageResource(R.drawable.loading_s);
+                    }
+                }
+            };
+            RequestManagerViewPager.getInstance().getViewPager(subscriber);
+        } else {
+            if (NewsInfo.isShowPic) {
+                if (cache.getCache(new ViewPagerBeen()) != null) {
+                    view.setText(cache.getCache(new ViewPagerBeen()).getShowapi_res_body().getNewslist().get(position).getTitle());
                     Glide.with(ctx)
-                            .load(viewPagerBeen.getShowapi_res_body().getNewslist().get(position).getPicUrl())
+                            .load(cache.getCache(new ViewPagerBeen()).getShowapi_res_body().getNewslist().get(position).getPicUrl())
                             .error(R.drawable.no_picture)
                             .into(view);
-
-                }else {
-                    view.setImageResource(R.drawable.loading_s);
                 }
+            } else {
+                view.setImageResource(R.drawable.loading_s);
             }
-        };
-        RequestManagerViewPager.getInstance().getViewPager(subscriber);
+        }
+
         view.setScaleType(ImageView.ScaleType.CENTER_CROP);
         view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT
                 , ViewGroup.LayoutParams.MATCH_PARENT));
-
         return view;
     }
 
@@ -69,5 +86,4 @@ public class ViewPagerAdapter extends StaticPagerAdapter {
     public int getCount() {
         return 5;
     }
-
 }

@@ -3,6 +3,7 @@ package com.xushuzhan.quiltnews.presenter;
 import android.util.Log;
 
 import com.jude.utils.JUtils;
+import com.xushuzhan.quiltnews.APP;
 import com.xushuzhan.quiltnews.cache.Cache;
 import com.xushuzhan.quiltnews.modle.been.NewsListBeen;
 import com.xushuzhan.quiltnews.modle.network.net.RequestManagerNewsList;
@@ -22,7 +23,7 @@ public class FirstTabFragmentPresenter {
     }
 
     public void showNewsList(){
-        final Cache cache = new Cache();
+        final Cache<NewsListBeen> cache = new Cache<>(APP.getAppContext());
         if (JUtils.isNetWorkAvilable()) {
             Subscriber<NewsListBeen> subscriber = new Subscriber<NewsListBeen>() {
 
@@ -45,7 +46,7 @@ public class FirstTabFragmentPresenter {
             };
             RequestManagerNewsList.getInstance().getNewsList(subscriber, "top");
         } else {
-            NewsListBeen newsListBeen = (NewsListBeen) cache.getCache("NewsListBeen");
+            NewsListBeen newsListBeen = cache.getCache(new NewsListBeen());
             iFirstTabView.addDataToRecyclerView(newsListBeen);
             ListBeen = newsListBeen;
         }

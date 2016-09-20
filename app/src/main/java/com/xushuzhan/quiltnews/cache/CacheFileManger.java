@@ -1,8 +1,8 @@
 package com.xushuzhan.quiltnews.cache;
 
+import android.content.Context;
+
 import com.google.gson.Gson;
-import com.xushuzhan.quiltnews.APP;
-import com.xushuzhan.quiltnews.modle.been.NewsListBeen;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -19,16 +19,20 @@ import java.io.Writer;
 public class CacheFileManger {
 
     public static final String TAG = "CacheFileManger";
-    public static final String CACHE_DIR = APP.getAppContext().getCacheDir().getPath();
+    private String mCacheDir;
 
-    public static boolean add(Object o) throws IOException {
-        File cacheFile = new File(CACHE_DIR + o.getClass().getSimpleName());
+    public CacheFileManger(Context context) {
+        mCacheDir = context.getCacheDir().getPath();
+    }
+
+    public boolean add(Object o) throws IOException {
+        File cacheFile = new File(mCacheDir + o.getClass().getSimpleName());
         cacheFile.deleteOnExit();
         return cacheFile.createNewFile();
     }
 
-    protected static void writeToCache(Object o) throws IOException {
-        File file = new File(CACHE_DIR + o.getClass().getSimpleName());
+    protected void writeToCache(Object o) throws IOException {
+        File file = new File(mCacheDir + o.getClass().getSimpleName());
         Gson gson = new Gson();
         String in = gson.toJson(o);
         Writer out = new FileWriter(file);
@@ -36,17 +40,15 @@ public class CacheFileManger {
         out.close();
     }
 
-    protected static NewsListBeen readFromCache(String name) throws IOException {
-        File file = new File(CACHE_DIR + name);
+    protected String readFromCache(String name) throws IOException {
+        File file = new File(mCacheDir + name);
         if (!file.exists()) {
             return null;
         } else {
             InputStreamReader read = new InputStreamReader(new FileInputStream(file));
             BufferedReader bReader = new BufferedReader(read);
-            String s = bReader.readLine();
-            Gson gson = new Gson();
             //// TODO: 2016/9/18 泛型
-            return gson.fromJson(s, NewsListBeen.class);
+            return bReader.readLine();
         }
     }
 }

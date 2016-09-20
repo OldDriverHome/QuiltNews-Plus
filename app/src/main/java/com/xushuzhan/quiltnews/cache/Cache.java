@@ -1,7 +1,9 @@
 package com.xushuzhan.quiltnews.cache;
 
+import android.content.Context;
 import android.support.annotation.Nullable;
-import android.util.Log;
+
+import com.google.gson.Gson;
 
 import java.io.IOException;
 
@@ -9,22 +11,30 @@ import java.io.IOException;
  * Created by simonla on 2016/9/18.
  * Have a good day.
  */
-public class Cache {
+public class Cache<T> {
 
     public static final String TAG = "Cache";
+    private CacheFileManger mCacheFileManger;
+    private Context mContext;
 
-    public void saveCache(Object o) {
+    public Cache(Context context) {
+        mContext = context;
+        mCacheFileManger = new CacheFileManger(mContext);
+    }
+
+    public void saveCache(T o) {
         try {
-                CacheFileManger.writeToCache(o);
+            mCacheFileManger.writeToCache(o);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     @Nullable
-    public Object getCache(String name) {
+    public T getCache(T name) {
         try {
-          return   CacheFileManger.readFromCache(name);
+            Gson gson = new Gson();
+            return (T) gson.fromJson(mCacheFileManger.readFromCache(name.getClass().getSimpleName()), name.getClass());
         } catch (IOException e) {
             return null;
         }
