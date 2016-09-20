@@ -79,7 +79,7 @@ public class BedNewsListPresenter {
     public void initTimer() {
         try {
             final TimerUtils timer = new TimerUtils();//实例化
-            timer.setTotalTime(30*60* 1000);//设置毫秒数
+            timer.setTotalTime(30*60*1000);//设置毫秒数
             timer.setIntervalTime(30* 1000);//设置间隔数
             timer.setTimerLiener(new TimerUtils.TimeListener() {
                 @Override

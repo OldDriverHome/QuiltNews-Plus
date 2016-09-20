@@ -48,11 +48,11 @@ public class GuideActivity extends AppCompatActivity {
         GuideFragment fragment2 = new GuideFragment();
         GuideFragment fragment3 = new GuideFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt(GuideFragment.ARGUMENT_DRAWABLE, R.drawable.start1);
+        bundle.putInt(GuideFragment.ARGUMENT_DRAWABLE, R.drawable.news_glide);
         bundle.putString(GuideFragment.ARGUMENT_STRING, "资讯触手可及");
         fragment.setArguments(bundle);
         Bundle bundle1 = new Bundle();
-        bundle1.putInt(GuideFragment.ARGUMENT_DRAWABLE, R.drawable.start2);
+        bundle1.putInt(GuideFragment.ARGUMENT_DRAWABLE, R.drawable.video_glide);
         bundle1.putString(GuideFragment.ARGUMENT_STRING, "视频拒绝广告");
         fragment1.setArguments(bundle1);
         Bundle bundle2 = new Bundle();
