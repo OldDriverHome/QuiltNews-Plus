@@ -86,6 +86,11 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
         super.onResume();
         if (AVUser.getCurrentUser() != null && AVUser.getCurrentUser().get("nick_name") == null) {
             nickName.setText("设置昵称");
+            if(SharedPreferenceUtils.getString(APP.getAppContext(),"nick_name")!=null&&!SharedPreferenceUtils.getString(APP.getAppContext(),"nick_name").equals("匿名用户")){
+                Log.d(TAG, "onResume: 本地存在nick_name");
+                nickName.setText(SharedPreferenceUtils.getString(APP.getAppContext(),"nick_name"));
+
+            }
         }
     }
 
@@ -340,14 +345,16 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
     private void checkInfo() {
         if (SharedPreferenceUtils.getString(APP.getAppContext(), "nick_name")!=null&&!SharedPreferenceUtils.getString(APP.getAppContext(), "nick_name").equals("匿名用户")) {
             nickName.setText(SharedPreferenceUtils.getString(APP.getAppContext(), "nick_name"));
+            Log.d(TAG, "checkInfo: 加载本地昵称"+SharedPreferenceUtils.getString(APP.getAppContext(), "nick_name"));
         } else {
             if (AVUser.getCurrentUser() != null) {
-                Log.d(TAG, "checkInfo: objectid=" + AVUser.getCurrentUser().getObjectId());
+                Log.d(TAG, "checkInfo: 加载昵称：已经登录");
+                Log.d(TAG, "checkInfo: objectid=" + AVUser.getCurrentUser().get("nick_name"));
+
                 AVQuery<AVObject> avQuery = new AVQuery<>("_User");
                 avQuery.getInBackground(AVUser.getCurrentUser().getObjectId(), new GetCallback<AVObject>() {
                     @Override
                     public void done(AVObject avObject, AVException e) {
-                        Log.d(TAG, "done: "+avObject);
                         if (avObject.get("nick_name") != null) {
                             if (!avObject.get("nick_name").toString().equals("")) {
                                 nickName.setText(avObject.get("nick_name").toString());
@@ -358,6 +365,7 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
                         }
                     }
                 });
+
             }
         }
 
