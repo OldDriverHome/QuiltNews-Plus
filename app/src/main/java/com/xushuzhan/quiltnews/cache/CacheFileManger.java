@@ -1,7 +1,5 @@
 package com.xushuzhan.quiltnews.cache;
 
-import android.util.Log;
-
 import com.google.gson.Gson;
 import com.xushuzhan.quiltnews.APP;
 import com.xushuzhan.quiltnews.modle.been.NewsListBeen;
@@ -24,9 +22,7 @@ public class CacheFileManger {
     public static final String CACHE_DIR = APP.getAppContext().getCacheDir().getPath();
 
     public static boolean add(Object o) throws IOException {
-        Log.d(TAG, "add: " + o.getClass().getSimpleName());
         File cacheFile = new File(CACHE_DIR + o.getClass().getSimpleName());
-        Log.d(TAG, "add: " + cacheFile.exists());
         cacheFile.deleteOnExit();
         return cacheFile.createNewFile();
     }
@@ -38,7 +34,6 @@ public class CacheFileManger {
         Writer out = new FileWriter(file);
         out.write(in);
         out.close();
-        Log.d(TAG, "writeToCache: " + in);
     }
 
     protected static NewsListBeen readFromCache(String name) throws IOException {
@@ -49,7 +44,6 @@ public class CacheFileManger {
             InputStreamReader read = new InputStreamReader(new FileInputStream(file));
             BufferedReader bReader = new BufferedReader(read);
             String s = bReader.readLine();
-            Log.d(TAG, "readFromCache: "+s);
             Gson gson = new Gson();
             //// TODO: 2016/9/18 泛型
             return gson.fromJson(s, NewsListBeen.class);

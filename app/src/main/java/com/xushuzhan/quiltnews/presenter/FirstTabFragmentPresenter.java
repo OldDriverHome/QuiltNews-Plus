@@ -24,7 +24,6 @@ public class FirstTabFragmentPresenter {
     public void showNewsList(){
         final Cache cache = new Cache();
         if (JUtils.isNetWorkAvilable()) {
-            Log.d(TAG, "showNewsList: 有网");
             Subscriber<NewsListBeen> subscriber = new Subscriber<NewsListBeen>() {
 
                 @Override
@@ -39,7 +38,6 @@ public class FirstTabFragmentPresenter {
 
                 @Override
                 public void onNext(NewsListBeen newsListBeen) {
-                    //请求完成;
                     cache.saveCache(newsListBeen);
                     iFirstTabView.addDataToRecyclerView(newsListBeen);
                     ListBeen = newsListBeen;
@@ -47,7 +45,6 @@ public class FirstTabFragmentPresenter {
             };
             RequestManagerNewsList.getInstance().getNewsList(subscriber, "top");
         } else {
-            Log.d(TAG, "showNewsList: 无网");
             NewsListBeen newsListBeen = (NewsListBeen) cache.getCache("NewsListBeen");
             iFirstTabView.addDataToRecyclerView(newsListBeen);
             ListBeen = newsListBeen;

@@ -45,25 +45,13 @@ public class ViewPagerAdapter extends StaticPagerAdapter {
             @Override
             public void onNext(ViewPagerBeen viewPagerBeen) {
                 viewPagersContent = viewPagerBeen;
-//                for(int i = 0;i<viewPagersContent.getNewslist().size();i++){
-//                    if(viewPagersContent.getNewslist().get(i).getPicUrl().equals("")){
-//                        Log.d(TAG, "onNext: 没有图片哟");
-//
-//                    }
-//                }
                 if(NewsInfo.isShowPic) {
                     view.setText(viewPagerBeen.getShowapi_res_body().getNewslist().get(position).getTitle());
                     Glide.with(ctx)
                             .load(viewPagerBeen.getShowapi_res_body().getNewslist().get(position).getPicUrl())
                             .error(R.drawable.no_picture)
                             .into(view);
-//                    Glide.with(ctx).load(viewPagerBeen.getShowapi_res_body().getNewslist().get(position).getUrl())
-//                            .asBitmap().into(new SimpleTarget<Bitmap>() {
-//                        @Override
-//                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-//                            view.setBitmap(resource);
-//                        }
-//                    });
+
                 }else {
                     view.setImageResource(R.drawable.loading_s);
                 }

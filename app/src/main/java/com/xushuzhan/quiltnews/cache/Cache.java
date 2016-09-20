@@ -15,12 +15,9 @@ public class Cache {
 
     public void saveCache(Object o) {
         try {
-            Log.d(TAG, "saveCache: "+CacheFileManger.add(o));
-           // if (CacheFileManger.add(o)) {
                 CacheFileManger.writeToCache(o);
-           // }
         } catch (IOException e) {
-            Log.d(TAG, "saveCache: "+e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -29,7 +26,6 @@ public class Cache {
         try {
           return   CacheFileManger.readFromCache(name);
         } catch (IOException e) {
-            Log.d(TAG, "getCache: "+e.getMessage());
             return null;
         }
     }
