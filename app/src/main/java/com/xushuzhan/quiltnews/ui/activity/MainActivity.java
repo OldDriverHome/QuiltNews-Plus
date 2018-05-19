@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.xushuzhan.quiltnews.R;
 import com.xushuzhan.quiltnews.ui.fragment.bottom.BeforeBedNewsFragment;
+import com.xushuzhan.quiltnews.ui.fragment.bottom.DynamicFragment;
 import com.xushuzhan.quiltnews.ui.fragment.bottom.EyeshotNewsFragment;
 import com.xushuzhan.quiltnews.ui.fragment.bottom.HotNewsFragment;
 import com.xushuzhan.quiltnews.ui.fragment.bottom.PersonalCenterFragment;
@@ -69,6 +70,12 @@ public class MainActivity extends AppCompatActivity {
                         FragmentTransaction transaction3 = fragmentManager.beginTransaction();
                         transaction3.replace(R.id.content, new PersonalCenterFragment());
                         transaction3.commit();
+                        break;
+
+                    case R.id.bottom_dynamic:
+                        FragmentTransaction transaction4 = fragmentManager.beginTransaction();
+                        transaction4.replace(R.id.content, new DynamicFragment());
+                        transaction4.commit();
                         break;
                 }
             }
