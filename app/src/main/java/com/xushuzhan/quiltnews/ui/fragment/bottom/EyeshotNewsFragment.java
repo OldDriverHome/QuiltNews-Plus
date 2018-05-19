@@ -23,12 +23,12 @@ public class EyeshotNewsFragment extends Fragment{
     public TabLayout mTabLayout;
     public ViewPager mViewPager;
     private InfoFixedPageAdapter infoFixedPageAdapter;
-    String newsTitles[]  = new String[]{"搞笑","科技","娱乐","微电影","汽车","旅游","游戏"};
+    String newsTitles[]  = new String[]{"科技","娱乐","微电影","汽车","旅游","游戏","搞笑"};
 
     //储存fragment的数组
     private List<Fragment> mFragments;
     //tab选项卡中的标题
-    private String[] titles=new String[]{"搞笑","科技","娱乐","微电影","汽车","旅游","游戏"};
+    private String[] titles=new String[]{"科技","娱乐","微电影","汽车","旅游","游戏","搞笑"};
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

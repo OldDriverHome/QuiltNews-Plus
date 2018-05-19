@@ -45,6 +45,13 @@
             android:background="@color/card_view_color"
             />
         <RadioButton
+            android:id="@+id/bottom_dynamic"
+            style="@style/bottom_tab"
+            android:drawableTop="@drawable/bottom_dynamic_selector"
+            android:text="动态"
+            android:background="@color/card_view_color"
+            />
+        <RadioButton
             android:id="@+id/bottom_personal_center"
             style="@style/bottom_tab"
             android:drawableTop="@drawable/bottom_personal_center_selector"

@@ -16,14 +16,13 @@ import com.xushuzhan.quiltnews.R;
 import com.xushuzhan.quiltnews.modle.impl.VideoListModle;
 
 import com.xushuzhan.quiltnews.ui.adapter.VideoAdapter;
+import com.xushuzhan.quiltnews.ui.fragment.BaseFragment;
 
-
-import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
 
 /**
  * Created by xushuzhan on 2016/8/17.
  */
-public class VideoInfoPageFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
+public class VideoInfoPageFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener{
     public static final String TAG = "OtherInfoPageFragment";
     private static final String PAGER_POSITION = "position";
     public int Page = 1;
@@ -65,34 +64,41 @@ public class VideoInfoPageFragment extends Fragment implements SwipeRefreshLayou
     private void setRecyclerView(String title) {
         recyclerView= (EasyRecyclerView) mView.findViewById(R.id.recycler_view_fragment_video_view_pager);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapterWithProgress(adapter = new VideoAdapter(getContext()));
-        Log.d(TAG, "setRecyclerView: "+title);
+        recyclerView.setAdapterWithProgress(adapter = new VideoAdapter(getActivity(),this));
         videoListModle = new VideoListModle(adapter);
-        videoListModle.getVedioList(title,"5",String.valueOf(Page));
+        videoListModle.getVedioList(title,"10",String.valueOf(Page));
         recyclerView.setRefreshListener(this);
-        if(!recyclerView.hasFocus()){
-            JCVideoPlayer.releaseAllVideos();
-        }
 
     }
     @Override
     public void onRefresh() {
         adapter.clear();
-        JCVideoPlayer.releaseAllVideos();
         videoListModle.getVedioList(getArguments().getString(PAGER_POSITION),"5",String.valueOf(++Page));
         recyclerView.setRefreshing(false);
+        notifyLifeCycleOnDestroy();
     }
 
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        notifyLifeCycleResume();
+    }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        JCVideoPlayer.releaseAllVideos();
+       notifyLifeCycleOnDestroy();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        JCVideoPlayer.releaseAllVideos();
+       notifyLifeCyclePause();
     }
+
+
+
+
 }

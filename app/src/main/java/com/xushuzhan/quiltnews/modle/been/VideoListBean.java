@@ -91,6 +91,34 @@ public class VideoListBean {
         private int up_count;
         private int down_count;
         private String published;
+
+        @Override
+        public String toString() {
+            return "VideosBean{" +
+                    "id='" + id + '\'' +
+                    ", title='" + title + '\'' +
+                    ", link='" + link + '\'' +
+                    ", thumbnail='" + thumbnail + '\'' +
+                    ", bigThumbnail='" + bigThumbnail + '\'' +
+                    ", thumbnail_v2='" + thumbnail_v2 + '\'' +
+                    ", duration=" + duration +
+                    ", category='" + category + '\'' +
+                    ", state='" + state + '\'' +
+                    ", view_count='" + view_count + '\'' +
+                    ", favorite_count=" + favorite_count +
+                    ", comment_count=" + comment_count +
+                    ", up_count=" + up_count +
+                    ", down_count=" + down_count +
+                    ", published='" + published + '\'' +
+                    ", user=" + user +
+                    ", public_type='" + public_type + '\'' +
+                    ", tags='" + tags + '\'' +
+                    ", day_vv=" + day_vv +
+                    ", operation_limit=" + operation_limit +
+                    ", streamtypes=" + streamtypes +
+                    '}';
+        }
+
         /**
          * id : 320108715
          * name : Big笑工坊

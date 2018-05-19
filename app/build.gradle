@@ -10,6 +10,10 @@ android {
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
+        ndk {
+            abiFilters "armeabi-v7a"
+        }
     }
     buildTypes {
         release {
@@ -18,10 +22,15 @@ android {
         }
     }
 }
-
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
+    compile 'com.android.support:multidex:1.0.1'
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.support:design:24.2.1'
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
@@ -45,7 +54,7 @@ dependencies {
     compile files('libs/okhttp-2.6.0-leancloud.jar')
     compile files('libs/okio-1.6.0-leancloud.jar')
     compile files('libs/protobuf-java-2.6.1.jar')
-    compile 'fm.jiecao:jiecaovideoplayer:4.6.1'
+//    compile 'fm.jiecao:jiecaovideoplayer:4.6.1'
     compile files('libs/mta-sdk-1.6.2.jar')
     compile files('libs/open_sdk_r5756.jar')
     compile 'cn.finalteam.rxgalleryfinal:library:0.0.2'
@@ -53,6 +62,12 @@ dependencies {
     compile 'com.github.JakeWharton:ViewPagerIndicator:2.4.1'
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'com.jude:utils:1.2.1'
-    compile "com.github.VictorAlbertos.RxCache:runtime:1.6.4"
+    compile 'com.github.VictorAlbertos.RxCache:runtime:1.6.4'
     compile 'com.github.VictorAlbertos.Jolyglot:gson:0.0.3'
+    //优酷sdk
+//    compile 'com.alibaba:fastjson:1.1.68.android'
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
+    compile files('libs/mma_sdk.jar')
+    compile files('libs/utdid4all-1.1.5.5.jar')
+    compile(name: 'YoukuPlayerOpenSDK-release', ext: 'aar')
 }
